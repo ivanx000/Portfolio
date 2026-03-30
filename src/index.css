@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -11,8 +13,8 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Barlow', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Instrument Serif', Georgia, serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
@@ -51,11 +53,10 @@
 }
 
 #root {
-  width: 1126px;
+  width: 100%;
   max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
+  margin: 0;
+  text-align: initial;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -64,6 +65,7 @@
 
 body {
   margin: 0;
+  background: #000;
 }
 
 h1,
@@ -127,14 +129,32 @@ code {
     padding: 1.4px;
     background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
   }
 
   .liquid-glass-strong {
-    @apply liquid-glass;
+    background: rgba(255, 255, 255, 0.01);
+    background-blend-mode: luminosity;
+    position: relative;
+    overflow: hidden;
     backdrop-filter: blur(50px);
     box-shadow: 4px 4px 4px rgba(0,0,0,0.05), inset 0 1px 1px rgba(255,255,255,0.15);
+  }
+
+  .liquid-glass-strong::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.4px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
 }
