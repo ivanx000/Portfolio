@@ -161,7 +161,7 @@ function App() {
             whileInView={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.6, delay: 0.8, ease: 'easeOut' }}
-            className="mt-6 max-w-2xl text-base text-white/80 font-body"
+            className="home-subtext-primary mt-6 max-w-2xl text-base font-body"
           >
             I build polished digital experiences with thoughtful design, strong
             engineering fundamentals, and a focus on user impact.
@@ -174,7 +174,7 @@ function App() {
             transition={{ duration: 0.55, delay: 1.05 }}
             className="mt-4"
           >
-            <p className="text-sm md:text-base text-white/70 font-body tracking-wide">
+            <p className="home-subtext-secondary text-sm md:text-base font-body tracking-wide">
               Computer Science student at the University of Toronto
             </p>
           </motion.div>
@@ -191,10 +191,10 @@ function App() {
               {technicalSkillRows.map(({ items }, rowIndex) => (
               <div key={`skills-row-${rowIndex}`} className="skills-marquee">
                 <div
-                  className="skills-track"
+                  className={`skills-track ${rowIndex === 1 ? 'skills-track-reverse' : ''}`}
                   style={{ animationDuration: `${30 + rowIndex * 4}s` }}
                 >
-                  {[...items, ...items].map(({ label, icon: Icon }, index) => (
+                  {[...items, ...items, ...items, ...items].map(({ label, icon: Icon }, index) => (
                     <span key={`${label}-${index}`} className="skill-item">
                       <Icon size={22} aria-hidden="true" />
                       <span>{label}</span>

@@ -149,6 +149,17 @@
     color: rgba(255, 255, 255, 0.82);
   }
 
+  .home-subtext-primary {
+    color: rgba(255, 255, 255, 0.97);
+    font-weight: 500;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.46);
+  }
+
+  .home-subtext-secondary {
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.42);
+  }
+
   .skills-marquee {
     position: relative;
     width: 100vw;
@@ -165,6 +176,10 @@
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     will-change: transform;
+  }
+
+  .skills-track-reverse {
+    animation-direction: reverse;
   }
 
   .skill-item {
@@ -191,6 +206,6 @@
   }
 
   to {
-    transform: translateX(-50%);
+    transform: translateX(-25%);
   }
 }
