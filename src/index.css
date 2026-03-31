@@ -148,4 +148,53 @@
     line-height: 1.5;
     color: rgba(255, 255, 255, 0.82);
   }
+
+  .skills-marquee {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skills-surface {
+    background:
+      radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.42) 0%, rgba(188, 164, 255, 0.28) 34%, rgba(111, 82, 221, 0.58) 70%, rgba(84, 56, 184, 0.72) 100%);
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.32),
+      0 20px 50px rgba(70, 42, 140, 0.22);
+  }
+
+  .skills-track {
+    display: flex;
+    align-items: center;
+    gap: 0.95rem;
+    width: max-content;
+    animation-name: skills-scroll;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: transform;
+  }
+
+  .skill-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    background: rgba(255, 255, 255, 0.18);
+    padding: 0.5rem 0.95rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(6px);
+    white-space: nowrap;
+  }
+}
+
+@keyframes skills-scroll {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }

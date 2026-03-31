@@ -1,26 +1,87 @@
 import { motion } from 'framer-motion'
+import {
+  Atom,
+  BadgeCheck,
+  Bot,
+  Brain,
+  Cable,
+  Cloud,
+  Code2,
+  Database,
+  Flame,
+  FolderGit2,
+  Gauge,
+  GitBranch,
+  Globe,
+  Leaf,
+  Palette,
+  Server,
+  Sparkles,
+  Wind,
+} from 'lucide-react'
 import BlurText from './components/BlurText'
 import HLSVideo from './components/HLSVideo'
 import heroVideo from './assets/hero.mp4'
 
-const navLinks = ['Home', 'Skills', 'Tools', 'Experience', 'Interests']
+const navLinks = ['Home', 'Skills', 'Projects', 'Experience', 'Interests']
 
-const skills = [
-  'Frontend Architecture',
-  'TypeScript and React',
-  'Backend APIs',
-  'Data Structures and Algorithms',
+const technicalSkillRows = [
+  {
+    items: [
+      { label: 'Java', icon: Code2 },
+      { label: 'Python', icon: Code2 },
+      { label: 'JavaScript', icon: Code2 },
+      { label: 'SQL', icon: Database },
+      { label: 'HTML/CSS', icon: Globe },
+      { label: 'MongoDB', icon: Leaf },
+    ],
+  },
+  {
+    items: [
+      { label: 'React', icon: Atom },
+      { label: 'Node.js', icon: Server },
+      { label: 'FastAPI', icon: Sparkles },
+      { label: 'Express.js', icon: Cable },
+      { label: 'Tailwind CSS', icon: Wind },
+      { label: 'Vite', icon: Flame },
+      { label: 'Gradle', icon: BadgeCheck },
+    ],
+  },
+  {
+    items: [
+      { label: 'OpenGL', icon: Palette },
+      { label: 'Matplotlib', icon: Gauge },
+      { label: 'OpenAI API', icon: Bot },
+      { label: 'Google Gemini API', icon: Sparkles },
+      { label: 'Stable Diffusion', icon: Brain },
+      { label: 'REST APIs', icon: Globe },
+    ],
+  },
+  {
+    items: [
+      { label: 'Git', icon: GitBranch },
+      { label: 'GitHub', icon: FolderGit2 },
+      { label: 'Figma', icon: Palette },
+      { label: 'VS Code', icon: Code2 },
+      { label: 'IntelliJ', icon: Code2 },
+      { label: 'Postman', icon: Cloud },
+    ],
+  },
 ]
 
-const tools = [
-  'React',
-  'TypeScript',
-  'Next.js',
-  'Node.js',
-  'PostgreSQL',
-  'Tailwind CSS',
-  'Figma',
-  'Git and GitHub',
+const projects = [
+  {
+    title: 'Cinematic Portfolio System',
+    detail: 'Designed and implemented a motion-rich portfolio with reusable UI components and responsive layout architecture.',
+  },
+  {
+    title: 'AI-Enhanced Study Assistant',
+    detail: 'Built a full-stack web app that integrates modern LLM APIs for personalized learning support and search workflows.',
+  },
+  {
+    title: 'Realtime Team Dashboard',
+    detail: 'Created a data dashboard with performant charts, robust API integration, and production-minded state management.',
+  },
 ]
 
 const experiences = [
@@ -106,6 +167,8 @@ function App() {
             transition={{ duration: 0.6, delay: 0.8, ease: 'easeOut' }}
             className="mt-6 max-w-2xl text-base text-white/80 font-body"
           >
+            I build polished digital experiences with thoughtful design, strong
+            engineering fundamentals, and a focus on user impact.
           </motion.p>
 
           <motion.div
@@ -124,41 +187,55 @@ function App() {
 
       <section id="skills" className="px-6 py-24 md:px-14 lg:px-20">
         <div className="mx-auto max-w-6xl">
-          <span className="liquid-glass section-badge">Skills</span>
-          <h2 className="section-heading mb-10">Core strengths in software development.</h2>
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-            {skills.map((skill) => (
-              <article key={skill} className="liquid-glass rounded-2xl p-6">
-                <h3 className="text-2xl font-heading italic text-white">{skill}</h3>
+          <h2 className="mb-10 text-5xl md:text-6xl lg:text-7xl font-heading italic text-white tracking-tight">
+            My Skills
+          </h2>
+
+          <div className="skills-surface liquid-glass rounded-3xl p-6 md:p-10">
+            <div className="space-y-4">
+              {technicalSkillRows.map(({ items }, rowIndex) => (
+              <div key={`skills-row-${rowIndex}`} className="skills-marquee rounded-2xl p-2">
+                <div
+                  className="skills-track"
+                  style={{ animationDuration: `${28 + rowIndex * 4}s` }}
+                >
+                  {[...items, ...items].map(({ label, icon: Icon }, index) => (
+                    <span key={`${label}-${index}`} className="skill-pill">
+                      <Icon size={16} aria-hidden="true" />
+                      <span>{label}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" className="px-6 py-24 md:px-14 lg:px-20">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="mb-10 text-5xl md:text-6xl lg:text-7xl font-heading italic text-white tracking-tight">
+            Projects
+          </h2>
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+            {projects.map((project) => (
+              <article key={project.title} className="liquid-glass rounded-2xl p-7">
+                <h3 className="text-2xl font-heading italic text-white">{project.title}</h3>
+                <p className="mt-4 text-white/80 font-body text-sm leading-relaxed">
+                  {project.detail}
+                </p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="tools" className="px-6 py-24 md:px-14 lg:px-20">
-        <div className="mx-auto max-w-6xl">
-          <span className="liquid-glass section-badge">Tools</span>
-          <h2 className="section-heading mb-10">Technologies I use to build and ship.</h2>
-          <div className="liquid-glass rounded-3xl p-8 md:p-12">
-            <div className="flex flex-wrap gap-3">
-              {tools.map((tool) => (
-                <span
-                  key={tool}
-                  className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-white/90"
-                >
-                  {tool}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section id="experience" className="px-6 py-24 md:px-14 lg:px-20">
         <div className="mx-auto max-w-6xl">
-          <span className="liquid-glass section-badge">Experience</span>
-          <h2 className="section-heading mb-10">How I have been growing as a developer.</h2>
+          <h2 className="mb-10 text-5xl md:text-6xl lg:text-7xl font-heading italic text-white tracking-tight">
+            Experience
+          </h2>
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
             {experiences.map((experience) => (
               <article key={experience.title} className="liquid-glass rounded-2xl p-7">
@@ -174,8 +251,9 @@ function App() {
 
       <section id="interests" className="px-6 py-24 md:px-14 lg:px-20">
         <div className="mx-auto max-w-6xl">
-          <span className="liquid-glass section-badge">Interests</span>
-          <h2 className="section-heading mb-10">What I am currently exploring.</h2>
+          <h2 className="mb-10 text-5xl md:text-6xl lg:text-7xl font-heading italic text-white tracking-tight">
+            Interests
+          </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             {interests.map(({ title, description }) => (
               <article key={title} className="liquid-glass rounded-2xl p-6">
