@@ -47,8 +47,7 @@ function HLSVideo({ src, className, ...videoProps }: HLSVideoProps) {
       loop
       autoPlay
       playsInline
-      className={className ? `object-cover ${className}` : 'object-cover'}
-      style={{ objectFit: 'cover' }}
+      className={className}
       {...videoProps}
     />
   )

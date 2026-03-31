@@ -4,11 +4,11 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%;
+    --background: 150 28% 28%;
     --foreground: 0 0% 100%;
     --primary: 0 0% 100%;
-    --primary-foreground: 0 0% 0%;
-    --border: 0 0% 100% / 0.2;
+    --primary-foreground: 150 28% 20%;
+    --border: 145 36% 90% / 0.34;
     --radius: 9999px;
     --font-heading: 'Instrument Serif', serif;
     --font-body: 'Barlow', sans-serif;
@@ -19,7 +19,8 @@
   }
 
   body {
-    background: #000;
+    background:
+      radial-gradient(circle at 18% -4%, #6ea68b 0%, #4f7f68 34%, #3f6653 70%, #36594a 100%);
     color: hsl(var(--foreground));
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
@@ -34,11 +35,11 @@
 
 @layer components {
   .liquid-glass {
-    background: rgba(255, 255, 255, 0.01);
+    background: rgba(222, 245, 232, 0.14);
     background-blend-mode: luminosity;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(8px);
     border: none;
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 1px rgba(246, 255, 250, 0.24);
     position: relative;
     overflow: hidden;
   }
@@ -51,12 +52,12 @@
     padding: 1.4px;
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.45) 0%,
-      rgba(255, 255, 255, 0.15) 20%,
-      rgba(255, 255, 255, 0) 40%,
-      rgba(255, 255, 255, 0) 60%,
-      rgba(255, 255, 255, 0.15) 80%,
-      rgba(255, 255, 255, 0.45) 100%
+      rgba(245, 255, 250, 0.6) 0%,
+      rgba(245, 255, 250, 0.28) 20%,
+      rgba(245, 255, 250, 0) 40%,
+      rgba(245, 255, 250, 0) 60%,
+      rgba(245, 255, 250, 0.28) 80%,
+      rgba(245, 255, 250, 0.6) 100%
     );
     -webkit-mask:
       linear-gradient(#fff 0 0) content-box,
@@ -70,13 +71,13 @@
   }
 
   .liquid-glass-strong {
-    background: rgba(255, 255, 255, 0.01);
+    background: rgba(230, 250, 239, 0.2);
     background-blend-mode: luminosity;
     backdrop-filter: blur(50px);
     border: none;
     box-shadow:
-      4px 4px 4px rgba(0, 0, 0, 0.05),
-      inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      4px 4px 12px rgba(32, 58, 47, 0.16),
+      inset 0 1px 1px rgba(246, 255, 250, 0.24);
     position: relative;
     overflow: hidden;
   }
@@ -89,12 +90,12 @@
     padding: 1.4px;
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.5) 0%,
-      rgba(255, 255, 255, 0.2) 20%,
-      rgba(255, 255, 255, 0) 40%,
-      rgba(255, 255, 255, 0) 60%,
-      rgba(255, 255, 255, 0.2) 80%,
-      rgba(255, 255, 255, 0.5) 100%
+      rgba(245, 255, 250, 0.66) 0%,
+      rgba(245, 255, 250, 0.34) 20%,
+      rgba(245, 255, 250, 0) 40%,
+      rgba(245, 255, 250, 0) 60%,
+      rgba(245, 255, 250, 0.34) 80%,
+      rgba(245, 255, 250, 0.66) 100%
     );
     -webkit-mask:
       linear-gradient(#fff 0 0) content-box,
@@ -145,6 +146,6 @@
     font-weight: 300;
     font-size: 0.875rem;
     line-height: 1.5;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.82);
   }
 }
