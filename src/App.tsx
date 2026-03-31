@@ -86,7 +86,7 @@ function App() {
     <div className="bg-black overflow-visible">
       <header className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4">
-          <img src="/favicon.svg" alt="Studio logo" width={48} height={48} className="size-12" />
+          <div className="w-12" aria-hidden="true" />
 
           <nav className="liquid-glass rounded-full px-2 py-2">
             <ul className="flex items-center gap-1 md:gap-2">
@@ -113,11 +113,11 @@ function App() {
         </div>
       </header>
 
-      <section className="relative h-[1000px] overflow-visible bg-black">
+      <section className="relative h-[1000px] overflow-hidden bg-black">
         <HLSVideo
           src={heroVideoSrc}
           poster="/images/hero_bg.jpeg"
-          className="absolute top-[20%] z-0 h-auto w-full object-contain"
+          className="absolute inset-0 z-0 h-full w-full object-cover"
           preload="auto"
         />
         <div className="absolute inset-0 z-0 bg-black/5" />
