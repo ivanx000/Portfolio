@@ -55,10 +55,6 @@ const technicalSkillRows = [
       { label: 'Google Gemini API', icon: Sparkles },
       { label: 'Stable Diffusion', icon: Brain },
       { label: 'REST APIs', icon: Globe },
-    ],
-  },
-  {
-    items: [
       { label: 'Git', icon: GitBranch },
       { label: 'GitHub', icon: FolderGit2 },
       { label: 'Figma', icon: Palette },
@@ -186,36 +182,34 @@ function App() {
       </section>
 
       <section id="skills" className="px-6 py-24 md:px-14 lg:px-20">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-10 text-5xl md:text-6xl lg:text-7xl font-heading italic text-white tracking-tight">
-            My Skills
+        <div className="mx-auto max-w-7xl">
+          <h2 className="mb-14 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight">
+            Skills
           </h2>
 
-          <div className="skills-surface liquid-glass rounded-3xl p-6 md:p-10">
-            <div className="space-y-4">
+          <div className="space-y-6">
               {technicalSkillRows.map(({ items }, rowIndex) => (
-              <div key={`skills-row-${rowIndex}`} className="skills-marquee rounded-2xl p-2">
+              <div key={`skills-row-${rowIndex}`} className="skills-marquee">
                 <div
                   className="skills-track"
-                  style={{ animationDuration: `${28 + rowIndex * 4}s` }}
+                  style={{ animationDuration: `${30 + rowIndex * 4}s` }}
                 >
                   {[...items, ...items].map(({ label, icon: Icon }, index) => (
-                    <span key={`${label}-${index}`} className="skill-pill">
-                      <Icon size={16} aria-hidden="true" />
+                    <span key={`${label}-${index}`} className="skill-item">
+                      <Icon size={22} aria-hidden="true" />
                       <span>{label}</span>
                     </span>
                   ))}
                 </div>
               </div>
             ))}
-            </div>
           </div>
         </div>
       </section>
 
       <section id="projects" className="px-6 py-24 md:px-14 lg:px-20">
         <div className="mx-auto max-w-6xl">
-          <h2 className="mb-10 text-5xl md:text-6xl lg:text-7xl font-heading italic text-white tracking-tight">
+          <h2 className="mb-10 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight">
             Projects
           </h2>
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
@@ -233,7 +227,7 @@ function App() {
 
       <section id="experience" className="px-6 py-24 md:px-14 lg:px-20">
         <div className="mx-auto max-w-6xl">
-          <h2 className="mb-10 text-5xl md:text-6xl lg:text-7xl font-heading italic text-white tracking-tight">
+          <h2 className="mb-10 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight">
             Experience
           </h2>
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
@@ -251,7 +245,7 @@ function App() {
 
       <section id="interests" className="px-6 py-24 md:px-14 lg:px-20">
         <div className="mx-auto max-w-6xl">
-          <h2 className="mb-10 text-5xl md:text-6xl lg:text-7xl font-heading italic text-white tracking-tight">
+          <h2 className="mb-10 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight">
             Interests
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">

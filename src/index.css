@@ -151,21 +151,15 @@
 
   .skills-marquee {
     position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
     overflow: hidden;
-  }
-
-  .skills-surface {
-    background:
-      radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.42) 0%, rgba(188, 164, 255, 0.28) 34%, rgba(111, 82, 221, 0.58) 70%, rgba(84, 56, 184, 0.72) 100%);
-    box-shadow:
-      inset 0 1px 1px rgba(255, 255, 255, 0.32),
-      0 20px 50px rgba(70, 42, 140, 0.22);
   }
 
   .skills-track {
     display: flex;
     align-items: center;
-    gap: 0.95rem;
+    gap: 3rem;
     width: max-content;
     animation-name: skills-scroll;
     animation-timing-function: linear;
@@ -173,19 +167,21 @@
     will-change: transform;
   }
 
-  .skill-pill {
+  .skill-item {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    border-radius: 9999px;
-    border: 1px solid rgba(255, 255, 255, 0.34);
-    background: rgba(255, 255, 255, 0.18);
-    padding: 0.5rem 0.95rem;
-    font-size: 1rem;
+    gap: 0.7rem;
+    padding: 0.2rem 0;
+    font-size: clamp(1.35rem, 2.1vw, 2rem);
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(6px);
+    color: rgba(255, 255, 255, 0.9);
+    transition: color 220ms ease, transform 220ms ease;
     white-space: nowrap;
+  }
+
+  .skill-item:hover {
+    color: #d9ff7a;
+    transform: translateY(-1px);
   }
 }
 
