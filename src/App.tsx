@@ -21,7 +21,7 @@ import {
 } from 'lucide-react'
 import BlurText from './components/BlurText'
 import HLSVideo from './components/HLSVideo'
-import heroVideo from './assets/hero.mp4'
+import heroVideo from './assets/hero2.mp4'
 
 const navLinks = ['Home', 'Skills', 'Projects', 'Experience', 'Interests']
 
@@ -121,7 +121,7 @@ const heroVideoSrc = heroVideo
 
 function App() {
   return (
-    <div className="overflow-x-clip bg-[radial-gradient(circle_at_18%_0%,#5d8f78_0%,#426d5a_34%,#345646_70%,#2a4639_100%)]">
+    <div className="overflow-x-clip bg-[radial-gradient(circle_at_22%_-6%,#8fd5f3_0%,#64b6df_28%,#4f9fbc_56%,#4b8c6f_100%)]">
       <header className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-center">
           <nav className="liquid-glass rounded-full px-2 py-2">
@@ -163,21 +163,8 @@ function App() {
             transition={{ duration: 0.6, delay: 0.8, ease: 'easeOut' }}
             className="home-subtext-primary mt-6 max-w-2xl text-base font-body"
           >
-            I build polished digital experiences with thoughtful design, strong
-            engineering fundamentals, and a focus on user impact.
+            Computer Science student at the University of Toronto
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.55, delay: 1.05 }}
-            className="mt-4"
-          >
-            <p className="home-subtext-secondary text-sm md:text-base font-body tracking-wide">
-              Computer Science student at the University of Toronto
-            </p>
-          </motion.div>
         </div>
       </section>
 
