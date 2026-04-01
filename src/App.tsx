@@ -170,13 +170,26 @@ function App() {
 
       <section id="skills" className="px-6 py-24 md:px-14 lg:px-20">
         <div className="mx-auto max-w-7xl">
-          <h2 className="mb-14 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className="mb-14 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight"
+          >
             Skills
-          </h2>
+          </motion.h2>
 
           <div className="space-y-6">
               {technicalSkillRows.map(({ items }, rowIndex) => (
-              <div key={`skills-row-${rowIndex}`} className="skills-marquee">
+              <motion.div
+                key={`skills-row-${rowIndex}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.6, delay: rowIndex * 0.15, ease: 'easeOut' }}
+                className="skills-marquee"
+              >
                 <div
                   className={`skills-track ${rowIndex === 1 ? 'skills-track-reverse' : ''}`}
                   style={{ animationDuration: `${30 + rowIndex * 4}s` }}
@@ -188,7 +201,7 @@ function App() {
                     </span>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -196,17 +209,30 @@ function App() {
 
       <section id="projects" className="px-6 py-24 md:px-14 lg:px-20">
         <div className="mx-auto max-w-6xl">
-          <h2 className="mb-10 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className="mb-10 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight"
+          >
             Projects
-          </h2>
+          </motion.h2>
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-            {projects.map((project) => (
-              <article key={project.title} className="liquid-glass rounded-2xl p-7">
+            {projects.map((project, index) => (
+              <motion.article
+                key={project.title}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.6, delay: index * 0.12, ease: 'easeOut' }}
+                className="liquid-glass rounded-2xl p-7"
+              >
                 <h3 className="text-2xl font-heading italic text-white">{project.title}</h3>
                 <p className="mt-4 text-white/80 font-body text-sm leading-relaxed">
                   {project.detail}
                 </p>
-              </article>
+              </motion.article>
             ))}
           </div>
         </div>
@@ -214,17 +240,30 @@ function App() {
 
       <section id="experience" className="px-6 py-24 md:px-14 lg:px-20">
         <div className="mx-auto max-w-6xl">
-          <h2 className="mb-10 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className="mb-10 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight"
+          >
             Experience
-          </h2>
+          </motion.h2>
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-            {experiences.map((experience) => (
-              <article key={experience.title} className="liquid-glass rounded-2xl p-7">
+            {experiences.map((experience, index) => (
+              <motion.article
+                key={experience.title}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.6, delay: index * 0.12, ease: 'easeOut' }}
+                className="liquid-glass rounded-2xl p-7"
+              >
                 <h3 className="text-2xl font-heading italic text-white">{experience.title}</h3>
                 <p className="mt-4 text-white/75 font-body text-sm leading-relaxed">
                   {experience.detail}
                 </p>
-              </article>
+              </motion.article>
             ))}
           </div>
         </div>
@@ -232,27 +271,46 @@ function App() {
 
       <section id="interests" className="px-6 py-24 md:px-14 lg:px-20">
         <div className="mx-auto max-w-6xl">
-          <h2 className="mb-10 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className="mb-10 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight"
+          >
             Interests
-          </h2>
+          </motion.h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {interests.map(({ title, description }) => (
-              <article key={title} className="liquid-glass rounded-2xl p-6">
+            {interests.map(({ title, description }, index) => (
+              <motion.article
+                key={title}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.6, delay: index * 0.12, ease: 'easeOut' }}
+                className="liquid-glass rounded-2xl p-6"
+              >
                 <h3 className="text-xl font-heading italic text-white">{title}</h3>
                 <p className="mt-3 text-white/70 font-body text-sm leading-relaxed">
                   {description}
                 </p>
-              </article>
+              </motion.article>
             ))}
           </div>
         </div>
       </section>
 
-      <footer className="px-6 py-14 md:px-14 lg:px-20">
+      <motion.footer
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.8 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className="px-6 py-14 md:px-14 lg:px-20"
+      >
         <div className="mx-auto max-w-6xl border-t border-white/10 pt-8 text-xs text-white/50 font-body">
           © 2026 Ivan Xie
         </div>
-      </footer>
+      </motion.footer>
     </div>
   )
 }
