@@ -26,6 +26,20 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     margin: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  #root {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+  }
+
+  html {
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 96px;
+    height: 100vh;
   }
 
   #root {
@@ -34,6 +48,43 @@
 }
 
 @layer components {
+  .app-surface {
+    position: relative;
+  }
+
+  #home,
+  #skills,
+  #projects,
+  #experience,
+  #interests {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .nav-shell {
+    background: rgba(20, 78, 103, 0.48);
+    backdrop-filter: blur(14px) saturate(135%);
+    border: 1px solid rgba(231, 246, 255, 0.48);
+    box-shadow:
+      0 12px 32px rgba(15, 48, 63, 0.34),
+      inset 0 1px 0 rgba(248, 253, 255, 0.38);
+  }
+
+  .nav-link {
+    color: rgba(245, 252, 255, 0.96);
+    text-shadow: 0 1px 6px rgba(8, 20, 31, 0.58);
+  }
+
+  .nav-link:hover {
+    color: #ffffff;
+    background: rgba(240, 250, 255, 0.16);
+  }
+
+  .nav-link:focus-visible {
+    outline: 2px solid rgba(245, 252, 255, 0.9);
+    outline-offset: 2px;
+  }
+
   .liquid-glass {
     background: linear-gradient(140deg, rgba(230, 244, 255, 0.2), rgba(248, 221, 233, 0.16));
     background-blend-mode: luminosity;

@@ -121,16 +121,16 @@ const heroVideoSrc = heroVideo
 
 function App() {
   return (
-    <div className="overflow-x-clip bg-[radial-gradient(circle_at_22%_-6%,#8fd5f3_0%,#64b6df_28%,#4f9fbc_56%,#4b8c6f_100%)]">
+    <div className="app-surface overflow-x-clip bg-[radial-gradient(circle_at_22%_-6%,#8fd5f3_0%,#64b6df_28%,#4f9fbc_56%,#4b8c6f_100%)]">
       <header className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-center">
-          <nav className="liquid-glass rounded-full px-2 py-2">
+          <nav className="nav-shell rounded-full px-2 py-2">
             <ul className="flex items-center gap-1 md:gap-2">
               {navLinks.map((link) => (
                 <li key={link}>
                   <a
                     href={`#${link.toLowerCase()}`}
-                    className="inline-flex rounded-full px-3 py-2 text-sm font-medium text-foreground/90 transition-colors hover:text-white"
+                    className="nav-link inline-flex rounded-full px-3 py-2 text-sm font-medium transition-colors"
                   >
                     {link}
                   </a>
