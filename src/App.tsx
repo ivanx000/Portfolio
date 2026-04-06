@@ -14,6 +14,8 @@ const IMAGE_STAGGER   = 100   // each image appears 100 ms after the last
 const TEXT_DELAY      = 500   // "Hey,", nav, label fade in after 500 ms
 const SPREAD_START    = 900   // images begin flying to final positions at 900 ms
 const IMAGE_SIZE      = '9%'  // slightly smaller cards for cleaner separation
+const HEY_OFFSET_X    = '-2.2%' // visual centering correction (left)
+const HEY_OFFSET_Y    = '-3.6%' // visual centering correction (up)
 
 // ─── Cluster centre ───────────────────────────────────────
 // All images are held at ~(46 %, 50 %) of the viewport before spreading.
@@ -30,7 +32,7 @@ const imageConfigs = [
   { src: img2, left: '31%', top: '34%', zi: 20 },
   { src: img3, left: '62%', top: '12%', zi: 20 },
   { src: img4, left: '84%', top: '41%', zi: 20 },
-  { src: img5, left:  '6%', top: '70%', zi: 20 },
+  { src: img5, left:  '6%', top: '65%', zi: 20 },
   { src: img6, left: '52%', top: '70%', zi: 20 },
   { src: img7, left: '74%', top: '72%', zi: 20 },
 ]
@@ -126,12 +128,12 @@ function App() {
       <motion.h1
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.15, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+        transition={{ duration: 1.9, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
         style={{
           position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          top: '50vh',
+          left: '50vw',
+          transform: `translate3d(calc(-50% + ${HEY_OFFSET_X}), calc(-50% + ${HEY_OFFSET_Y}), 0)`,
           zIndex: 40,
           margin: 0,
           fontFamily: "'Denton', 'Denton Expressive', 'Denton Text', 'Iowan Old Style', 'Baskerville', serif",
