@@ -13,6 +13,7 @@ import img7 from './assets/78ca28acbabff21940dbf6f1fad4648e.png'
 const IMAGE_STAGGER   = 100   // each image appears 100 ms after the last
 const TEXT_DELAY      = 500   // "Hey,", nav, label fade in after 500 ms
 const SPREAD_START    = 900   // images begin flying to final positions at 900 ms
+const IMAGE_SIZE      = '9%'  // slightly smaller cards for cleaner separation
 
 // ─── Cluster centre ───────────────────────────────────────
 // All images are held at ~(46 %, 50 %) of the viewport before spreading.
@@ -23,16 +24,15 @@ const CY = 50 // cluster centre y, in vh
 
 // ─── Image configuration ──────────────────────────────────
 // Positions measured from reference frames (795 × 503 px viewport).
-// width kept ~10-13 % to match the reference scale.
-// zi: z-index — img2 sits behind "Hey," (zi 8), the rest in front (zi 20).
+// All images use a uniform size to match the first image in the sequence.
 const imageConfigs = [
-  { src: img1, left: '17%', top: '11%', width: '11%', zi: 20 },
-  { src: img2, left: '29%', top: '33%', width: '10%', zi: 8  },
-  { src: img3, left: '60%', top: '11%', width: '13%', zi: 20 },
-  { src: img4, left: '80%', top: '42%', width:  '9%', zi: 20 },
-  { src: img5, left:  '6%', top: '68%', width: '10%', zi: 20 },
-  { src: img6, left: '50%', top: '68%', width: '10%', zi: 20 },
-  { src: img7, left: '73%', top: '70%', width: '10%', zi: 20 },
+  { src: img1, left: '16%', top: '12%', zi: 20 },
+  { src: img2, left: '31%', top: '34%', zi: 20 },
+  { src: img3, left: '62%', top: '12%', zi: 20 },
+  { src: img4, left: '84%', top: '41%', zi: 20 },
+  { src: img5, left:  '6%', top: '70%', zi: 20 },
+  { src: img6, left: '52%', top: '70%', zi: 20 },
+  { src: img7, left: '74%', top: '72%', zi: 20 },
 ]
 
 // Derive the transform offset that places each image's top-left corner
@@ -79,8 +79,8 @@ function App() {
     >
       {/* ── Top navigation ─────────────────────────────────── */}
       <motion.nav
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
         style={{
           position: 'fixed',
@@ -88,7 +88,7 @@ function App() {
           zIndex: 50,
           display: 'flex',
           justifyContent: 'space-between',
-          padding: '16px 20px',
+          padding: '8px 20px',
           fontSize: '11px',
           fontFamily: "'Barlow', sans-serif",
           fontWeight: 400,
@@ -102,8 +102,8 @@ function App() {
 
       {/* ── Portfolio / 2026 — left centre ─────────────────── */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
         style={{
           position: 'absolute',
@@ -124,21 +124,22 @@ function App() {
 
       {/* ── "Hey," headline ────────────────────────────────── */}
       <motion.h1
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.15, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
         style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          zIndex: 10,
+          zIndex: 40,
           margin: 0,
-          fontFamily: "'Playfair Display', serif",
+          fontFamily: "'Denton', 'Denton Expressive', 'Denton Text', 'Iowan Old Style', 'Baskerville', serif",
           fontStyle: 'normal',
           fontWeight: 400,
           fontSize: 'clamp(9rem, 22vw, 28rem)',
-          lineHeight: 0.85,
+          lineHeight: 0.82,
+          letterSpacing: '-0.012em',
           whiteSpace: 'nowrap',
           color: '#000',
           userSelect: 'none',
@@ -148,7 +149,7 @@ function App() {
       </motion.h1>
 
       {/* ── Scattered images ───────────────────────────────── */}
-      {imageConfigs.map(({ src, left, top, width, zi }, i) => {
+      {imageConfigs.map(({ src, left, top, zi }, i) => {
         const { ox, oy } = clusterOffset(left, top)
 
         return (
@@ -178,7 +179,8 @@ function App() {
               position: 'absolute',
               left,
               top,
-              width,
+              width: IMAGE_SIZE,
+              aspectRatio: '2 / 3',
               zIndex: zi,
               display: 'block',
               objectFit: 'cover',
