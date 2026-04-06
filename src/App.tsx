@@ -29,12 +29,12 @@ const CY = 50 // cluster centre y, in vh
 // All images use a uniform size to match the first image in the sequence.
 const imageConfigs = [
   { src: img1, left: '16%', top: '12%', zi: 20 },
-  { src: img2, left: '31%', top: '34%', zi: 20 },
+  { src: img2, left: '35%', top: '34%', zi: 20 },
   { src: img3, left: '62%', top: '12%', zi: 20 },
-  { src: img4, left: '84%', top: '41%', zi: 20 },
-  { src: img5, left:  '6%', top: '65%', zi: 20 },
+  { src: img4, left: '84%', top: '34%', zi: 20 },
+  { src: img5, left:  '6%', top: '61%', zi: 20 },
   { src: img6, left: '52%', top: '70%', zi: 20 },
-  { src: img7, left: '74%', top: '72%', zi: 20 },
+  { src: img7, left: '74%', top: '70%', zi: 20 },
 ]
 
 // Derive the transform offset that places each image's top-left corner
@@ -125,30 +125,37 @@ function App() {
       </motion.div>
 
       {/* ── "Hey," headline ────────────────────────────────── */}
-      <motion.h1
-        initial={{ opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.9, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+      <div
         style={{
           position: 'absolute',
           top: '50vh',
           left: '50vw',
           transform: `translate3d(calc(-50% + ${HEY_OFFSET_X}), calc(-50% + ${HEY_OFFSET_Y}), 0)`,
           zIndex: 40,
-          margin: 0,
-          fontFamily: "'Denton', 'Denton Expressive', 'Denton Text', 'Iowan Old Style', 'Baskerville', serif",
-          fontStyle: 'normal',
-          fontWeight: 400,
-          fontSize: 'clamp(9rem, 22vw, 28rem)',
-          lineHeight: 0.82,
-          letterSpacing: '-0.012em',
-          whiteSpace: 'nowrap',
-          color: '#000',
-          userSelect: 'none',
+          pointerEvents: 'none',
         }}
       >
-        Hey,
-      </motion.h1>
+        <motion.h1
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.9, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+          style={{
+            margin: 0,
+            fontFamily: "'Denton', 'Denton Expressive', 'Denton Text', 'Iowan Old Style', 'Baskerville', serif",
+            fontStyle: 'normal',
+            fontWeight: 200,
+            fontVariationSettings: "'wght' 220",
+            fontSize: 'clamp(10rem, 24vw, 31rem)',
+            lineHeight: 0.82,
+            letterSpacing: '-0.008em',
+            whiteSpace: 'nowrap',
+            color: '#000',
+            userSelect: 'none',
+          }}
+        >
+          Hey,
+        </motion.h1>
+      </div>
 
       {/* ── Scattered images ───────────────────────────────── */}
       {imageConfigs.map(({ src, left, top, zi }, i) => {
