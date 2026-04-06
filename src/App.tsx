@@ -1,316 +1,191 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import {
-  Atom,
-  BadgeCheck,
-  Bot,
-  Brain,
-  Cable,
-  Cloud,
-  Code2,
-  Database,
-  Flame,
-  FolderGit2,
-  Gauge,
-  GitBranch,
-  Globe,
-  Leaf,
-  Palette,
-  Server,
-  Sparkles,
-  Wind,
-} from 'lucide-react'
-import BlurText from './components/BlurText'
-import HLSVideo from './components/HLSVideo'
-import heroVideo from './assets/hero2.mp4'
 
-const navLinks = ['Home', 'Skills', 'Projects', 'Experience', 'Interests']
+import img1 from './assets/7C1DE476-39B7-4387-B12F-14946513A7ED.png'
+import img2 from './assets/b506f63c187f4fc202625926de4521d9.png'
+import img3 from './assets/a674e89510dec10ad745903bb5ad2cf3.png'
+import img4 from './assets/cb3c0c581819c13a5449d8c85e4e2ba1.png'
+import img5 from './assets/c51f25b8109b842c8c12b8df3b1ad426.png'
+import img6 from './assets/ffcdaf47af95d309bbe74e70128d0b95.png'
+import img7 from './assets/78ca28acbabff21940dbf6f1fad4648e.png'
 
-const technicalSkillRows = [
-  {
-    items: [
-      { label: 'Java', icon: Code2 },
-      { label: 'Python', icon: Code2 },
-      { label: 'JavaScript', icon: Code2 },
-      { label: 'SQL', icon: Database },
-      { label: 'HTML/CSS', icon: Globe },
-      { label: 'MongoDB', icon: Leaf },
-    ],
-  },
-  {
-    items: [
-      { label: 'React', icon: Atom },
-      { label: 'Node.js', icon: Server },
-      { label: 'FastAPI', icon: Sparkles },
-      { label: 'Express.js', icon: Cable },
-      { label: 'Tailwind CSS', icon: Wind },
-      { label: 'Vite', icon: Flame },
-      { label: 'Gradle', icon: BadgeCheck },
-    ],
-  },
-  {
-    items: [
-      { label: 'OpenGL', icon: Palette },
-      { label: 'Matplotlib', icon: Gauge },
-      { label: 'OpenAI API', icon: Bot },
-      { label: 'Google Gemini API', icon: Sparkles },
-      { label: 'Stable Diffusion', icon: Brain },
-      { label: 'REST APIs', icon: Globe },
-      { label: 'Git', icon: GitBranch },
-      { label: 'GitHub', icon: FolderGit2 },
-      { label: 'Figma', icon: Palette },
-      { label: 'VS Code', icon: Code2 },
-      { label: 'IntelliJ', icon: Code2 },
-      { label: 'Postman', icon: Cloud },
-    ],
-  },
+// ─── Animation timing (ms) ────────────────────────────────
+const IMAGE_STAGGER   = 100   // each image appears 100 ms after the last
+const TEXT_DELAY      = 500   // "Hey,", nav, label fade in after 500 ms
+const SPREAD_START    = 900   // images begin flying to final positions at 900 ms
+
+// ─── Cluster centre ───────────────────────────────────────
+// All images are held at ~(46 %, 50 %) of the viewport before spreading.
+// Each image is absolutely positioned at its FINAL location; a CSS transform
+// offset (ox, oy) moves it to the cluster while in the "holding" phase.
+const CX = 46 // cluster centre x, in vw
+const CY = 50 // cluster centre y, in vh
+
+// ─── Image configuration ──────────────────────────────────
+// Positions measured from reference frames (795 × 503 px viewport).
+// width kept ~10-13 % to match the reference scale.
+// zi: z-index — img2 sits behind "Hey," (zi 8), the rest in front (zi 20).
+const imageConfigs = [
+  { src: img1, left: '17%', top: '11%', width: '11%', zi: 20 },
+  { src: img2, left: '29%', top: '33%', width: '10%', zi: 8  },
+  { src: img3, left: '60%', top: '11%', width: '13%', zi: 20 },
+  { src: img4, left: '80%', top: '42%', width:  '9%', zi: 20 },
+  { src: img5, left:  '6%', top: '68%', width: '10%', zi: 20 },
+  { src: img6, left: '50%', top: '68%', width: '10%', zi: 20 },
+  { src: img7, left: '73%', top: '70%', width: '10%', zi: 20 },
 ]
 
-const projects = [
-  {
-    title: 'Cinematic Portfolio System',
-    detail: 'Designed and implemented a motion-rich portfolio with reusable UI components and responsive layout architecture.',
-  },
-  {
-    title: 'AI-Enhanced Study Assistant',
-    detail: 'Built a full-stack web app that integrates modern LLM APIs for personalized learning support and search workflows.',
-  },
-  {
-    title: 'Realtime Team Dashboard',
-    detail: 'Created a data dashboard with performant charts, robust API integration, and production-minded state management.',
-  },
-]
+// Derive the transform offset that places each image's top-left corner
+// at the cluster centre point.
+function clusterOffset(left: string, top: string) {
+  const l = parseFloat(left)  // e.g. 17
+  const t = parseFloat(top)   // e.g. 11
+  return { ox: `${CX - l}vw`, oy: `${CY - t}vh` }
+}
 
-const experiences = [
-  {
-    title: 'Product Builds',
-    detail:
-      'Built and deployed full-stack applications focused on performance, accessibility, and clean UI systems.',
-  },
-  {
-    title: 'Team Collaboration',
-    detail:
-      'Worked in student teams to scope features, deliver iterative milestones, and present technical decisions clearly.',
-  },
-  {
-    title: 'Internship Readiness',
-    detail:
-      'Practicing production workflows with code reviews, version control, and maintainable component architecture.',
-  },
-]
+// ─── Spread easing ───────────────────────────────────────
+const SPREAD_EASE = [0.25, 0.46, 0.45, 0.94] as const
 
-const interests = [
-  {
-    title: 'Human-Centered Design',
-    description: 'Designing interfaces that feel intuitive and enjoyable to use.',
-  },
-  {
-    title: 'Performance Engineering',
-    description: 'Profiling and optimizing web apps for speed across real devices.',
-  },
-  {
-    title: 'Systems Thinking',
-    description: 'Connecting frontend, backend, and data into coherent product systems.',
-  },
-  {
-    title: 'AI and Developer Tools',
-    description: 'Exploring ways intelligent tooling can amplify software craftsmanship.',
-  },
-]
-
-const heroVideoSrc = heroVideo
-
+// ─── Component ───────────────────────────────────────────
 function App() {
+  // How many images are currently showing at the cluster centre
+  const [visibleCount, setVisibleCount] = useState(0)
+  // Whether images have started flying to their final positions
+  const [spreading, setSpreading] = useState(false)
+
+  useEffect(() => {
+    const timers: ReturnType<typeof setTimeout>[] = []
+
+    // Stagger each image appearing at the cluster centre
+    for (let i = 0; i < imageConfigs.length; i++) {
+      timers.push(setTimeout(() => setVisibleCount(i + 1), i * IMAGE_STAGGER))
+    }
+
+    // Trigger the spread after text has had time to fade in
+    timers.push(setTimeout(() => setSpreading(true), SPREAD_START))
+
+    return () => timers.forEach(clearTimeout)
+  }, [])
+
   return (
-    <div className="app-surface overflow-x-clip bg-[radial-gradient(circle_at_22%_-6%,#8fd5f3_0%,#64b6df_28%,#4f9fbc_56%,#4b8c6f_100%)]">
-      <header className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8">
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-center">
-          <nav className="nav-shell rounded-full px-2 py-2">
-            <ul className="flex items-center gap-1 md:gap-2">
-              {navLinks.map((link) => (
-                <li key={link}>
-                  <a
-                    href={`#${link.toLowerCase()}`}
-                    className="nav-link inline-flex rounded-full px-3 py-2 text-sm font-medium transition-colors"
-                  >
-                    {link}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      </header>
-
-      <section id="home" className="relative min-h-[100svh] overflow-hidden">
-        <HLSVideo
-          src={heroVideoSrc}
-          className="absolute inset-0 z-0 h-full w-full object-cover"
-          preload="auto"
-        />
-        <div className="absolute inset-0 z-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.06),rgba(255,255,255,0.02))]" />
-
-        <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-5xl flex-col items-center justify-center px-6 text-center md:px-12">
-
-          <BlurText
-            text="Ivan Xie"
-            className="text-6xl md:text-7xl lg:text-8xl font-heading italic text-foreground leading-[0.86] tracking-[-3px]"
-          />
-
-          <motion.p
-            initial={{ opacity: 0, filter: 'blur(8px)', y: 20 }}
-            whileInView={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.6, delay: 0.8, ease: 'easeOut' }}
-            className="home-subtext-primary mt-6 max-w-2xl text-base font-body"
-          >
-            Computer Science student at the University of Toronto
-          </motion.p>
-        </div>
-      </section>
-
-      <section id="skills" className="px-6 py-24 md:px-14 lg:px-20">
-        <div className="mx-auto max-w-7xl">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="mb-14 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight"
-          >
-            Skills
-          </motion.h2>
-
-          <div className="space-y-6">
-              {technicalSkillRows.map(({ items }, rowIndex) => (
-              <motion.div
-                key={`skills-row-${rowIndex}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.6, delay: rowIndex * 0.15, ease: 'easeOut' }}
-                className="skills-marquee"
-              >
-                <div
-                  className={`skills-track ${rowIndex === 1 ? 'skills-track-reverse' : ''}`}
-                  style={{ animationDuration: `${30 + rowIndex * 4}s` }}
-                >
-                  {[...items, ...items, ...items, ...items].map(({ label, icon: Icon }, index) => (
-                    <span key={`${label}-${index}`} className="skill-item">
-                      <Icon size={22} aria-hidden="true" />
-                      <span>{label}</span>
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="projects" className="px-6 py-24 md:px-14 lg:px-20">
-        <div className="mx-auto max-w-6xl">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="mb-10 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight"
-          >
-            Projects
-          </motion.h2>
-          <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-            {projects.map((project, index) => (
-              <motion.article
-                key={project.title}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.6, delay: index * 0.12, ease: 'easeOut' }}
-                className="liquid-glass rounded-2xl p-7"
-              >
-                <h3 className="text-2xl font-heading italic text-white">{project.title}</h3>
-                <p className="mt-4 text-white/80 font-body text-sm leading-relaxed">
-                  {project.detail}
-                </p>
-              </motion.article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="experience" className="px-6 py-24 md:px-14 lg:px-20">
-        <div className="mx-auto max-w-6xl">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="mb-10 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight"
-          >
-            Experience
-          </motion.h2>
-          <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-            {experiences.map((experience, index) => (
-              <motion.article
-                key={experience.title}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.6, delay: index * 0.12, ease: 'easeOut' }}
-                className="liquid-glass rounded-2xl p-7"
-              >
-                <h3 className="text-2xl font-heading italic text-white">{experience.title}</h3>
-                <p className="mt-4 text-white/75 font-body text-sm leading-relaxed">
-                  {experience.detail}
-                </p>
-              </motion.article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="interests" className="px-6 py-24 md:px-14 lg:px-20">
-        <div className="mx-auto max-w-6xl">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="mb-10 text-center text-6xl md:text-7xl lg:text-8xl font-heading italic text-white tracking-tight"
-          >
-            Interests
-          </motion.h2>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {interests.map(({ title, description }, index) => (
-              <motion.article
-                key={title}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.6, delay: index * 0.12, ease: 'easeOut' }}
-                className="liquid-glass rounded-2xl p-6"
-              >
-                <h3 className="text-xl font-heading italic text-white">{title}</h3>
-                <p className="mt-3 text-white/70 font-body text-sm leading-relaxed">
-                  {description}
-                </p>
-              </motion.article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <motion.footer
+    <div
+      style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100vh',
+        background: '#fff',
+        overflow: 'hidden',
+      }}
+    >
+      {/* ── Top navigation ─────────────────────────────────── */}
+      <motion.nav
         initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.8 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="px-6 py-14 md:px-14 lg:px-20"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+        style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0,
+          zIndex: 50,
+          display: 'flex',
+          justifyContent: 'space-between',
+          padding: '16px 20px',
+          fontSize: '11px',
+          fontFamily: "'Barlow', sans-serif",
+          fontWeight: 400,
+          color: '#000',
+        }}
       >
-        <div className="mx-auto max-w-6xl border-t border-white/10 pt-8 text-xs text-white/50 font-body">
-          © 2026 Ivan Xie
-        </div>
-      </motion.footer>
+        <span>Ivan Xie</span>
+        <span>Software Engineer</span>
+        <span style={{ fontWeight: 700 }}>University of Toronto</span>
+      </motion.nav>
+
+      {/* ── Portfolio / 2026 — left centre ─────────────────── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+        style={{
+          position: 'absolute',
+          left: '20px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          zIndex: 30,
+          fontSize: '11px',
+          fontFamily: "'Barlow', sans-serif",
+          fontWeight: 400,
+          lineHeight: 1.4,
+          color: '#000',
+        }}
+      >
+        <div>Portfolio</div>
+        <div>2026</div>
+      </motion.div>
+
+      {/* ── "Hey," headline ────────────────────────────────── */}
+      <motion.h1
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 10,
+          margin: 0,
+          fontFamily: "'Playfair Display', serif",
+          fontStyle: 'normal',
+          fontWeight: 400,
+          fontSize: 'clamp(9rem, 22vw, 28rem)',
+          lineHeight: 0.85,
+          whiteSpace: 'nowrap',
+          color: '#000',
+          userSelect: 'none',
+        }}
+      >
+        Hey,
+      </motion.h1>
+
+      {/* ── Scattered images ───────────────────────────────── */}
+      {imageConfigs.map(({ src, left, top, width, zi }, i) => {
+        const { ox, oy } = clusterOffset(left, top)
+
+        return (
+          <motion.img
+            key={i}
+            src={src}
+            alt=""
+            // Start: offset to cluster centre, invisible
+            initial={{ x: ox, y: oy, opacity: 0, filter: 'grayscale(0%)' }}
+            // Phase A (not spreading): appear one-by-one at cluster centre in full colour
+            // Phase B (spreading): fly to final position, turn grey, reduce opacity
+            animate={
+              spreading
+                ? { x: 0, y: 0, opacity: 0.7, filter: 'grayscale(100%)' }
+                : { x: ox, y: oy, opacity: i < visibleCount ? 1 : 0, filter: 'grayscale(0%)' }
+            }
+            transition={
+              spreading
+                ? { duration: 0.9, ease: SPREAD_EASE }
+                : {
+                    opacity: { duration: 0.15, ease: 'easeOut' },
+                    x: { duration: 0 },
+                    y: { duration: 0 },
+                  }
+            }
+            style={{
+              position: 'absolute',
+              left,
+              top,
+              width,
+              zIndex: zi,
+              display: 'block',
+              objectFit: 'cover',
+            }}
+          />
+        )
+      })}
     </div>
   )
 }

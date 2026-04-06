@@ -1,264 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Instrument+Serif:ital@1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500&family=Playfair+Display:wght@400&display=swap');
 
 @import 'tailwindcss';
 
 @layer base {
   :root {
-    --background: 196 56% 47%;
-    --foreground: 0 0% 100%;
-    --primary: 0 0% 100%;
-    --primary-foreground: 196 42% 28%;
-    --border: 194 73% 94% / 0.38;
-    --radius: 9999px;
     --font-heading: 'Instrument Serif', serif;
     --font-body: 'Barlow', sans-serif;
   }
 
-  * {
-    border-color: hsl(var(--border));
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 
   body {
-    background:
-      radial-gradient(circle at 22% -8%, #9ee3ff 0%, #74c5ea 30%, #5aa8c8 58%, #5f9b79 100%);
-    color: hsl(var(--foreground));
+    background: #ffffff;
+    color: #000000;
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    margin: 0;
-    height: 100vh;
-    overflow: hidden;
   }
 
   #root {
-    height: 100vh;
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
-  }
-
-  html {
-    scroll-snap-type: y mandatory;
-    scroll-padding-top: 96px;
-    height: 100vh;
-  }
-
-  #root {
-    min-height: 100svh;
-  }
-}
-
-@layer components {
-  .app-surface {
-    position: relative;
-  }
-
-  #home,
-  #skills,
-  #projects,
-  #experience,
-  #interests {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-  }
-
-  .nav-shell {
-    background: rgba(20, 78, 103, 0.48);
-    backdrop-filter: blur(14px) saturate(135%);
-    border: 1px solid rgba(231, 246, 255, 0.48);
-    box-shadow:
-      0 12px 32px rgba(15, 48, 63, 0.34),
-      inset 0 1px 0 rgba(248, 253, 255, 0.38);
-  }
-
-  .nav-link {
-    color: rgba(245, 252, 255, 0.96);
-    text-shadow: 0 1px 6px rgba(8, 20, 31, 0.58);
-  }
-
-  .nav-link:hover {
-    color: #ffffff;
-    background: rgba(240, 250, 255, 0.16);
-  }
-
-  .nav-link:focus-visible {
-    outline: 2px solid rgba(245, 252, 255, 0.9);
-    outline-offset: 2px;
-  }
-
-  .liquid-glass {
-    background: linear-gradient(140deg, rgba(230, 244, 255, 0.2), rgba(248, 221, 233, 0.16));
-    background-blend-mode: luminosity;
-    backdrop-filter: blur(8px);
-    border: none;
-    box-shadow:
-      inset 0 1px 1px rgba(252, 246, 255, 0.28),
-      0 8px 24px rgba(47, 98, 121, 0.14);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .liquid-glass::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1.4px;
-    background: linear-gradient(
-      180deg,
-      rgba(236, 248, 255, 0.64) 0%,
-      rgba(255, 226, 240, 0.34) 20%,
-      rgba(252, 246, 255, 0) 40%,
-      rgba(252, 246, 255, 0) 60%,
-      rgba(255, 226, 240, 0.34) 80%,
-      rgba(236, 248, 255, 0.64) 100%
-    );
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-  }
-
-  .liquid-glass-strong {
-    background: linear-gradient(145deg, rgba(223, 241, 255, 0.24), rgba(255, 218, 233, 0.22));
-    background-blend-mode: luminosity;
-    backdrop-filter: blur(50px);
-    border: none;
-    box-shadow:
-      4px 4px 16px rgba(44, 91, 113, 0.2),
-      inset 0 1px 1px rgba(252, 244, 255, 0.28);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .liquid-glass-strong::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1.4px;
-    background: linear-gradient(
-      180deg,
-      rgba(235, 247, 255, 0.7) 0%,
-      rgba(255, 221, 238, 0.36) 20%,
-      rgba(252, 246, 255, 0) 40%,
-      rgba(252, 246, 255, 0) 60%,
-      rgba(255, 221, 238, 0.36) 80%,
-      rgba(235, 247, 255, 0.7) 100%
-    );
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-  }
-
-  .section-badge {
-    display: inline-block;
-    margin-bottom: 1rem;
-    padding: 0.25rem 0.875rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    line-height: 1rem;
-    font-weight: 500;
-    color: #fff;
-    font-family: var(--font-body);
-  }
-
-  .section-heading {
-    font-size: 2.25rem;
-    line-height: 0.9;
-    font-family: var(--font-heading);
-    font-style: italic;
-    letter-spacing: -0.025em;
-    color: #fff;
-  }
-
-  @media (min-width: 768px) {
-    .section-heading {
-      font-size: 3rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .section-heading {
-      font-size: 3.75rem;
-    }
-  }
-
-  .body-copy {
-    font-family: var(--font-body);
-    font-weight: 300;
-    font-size: 0.875rem;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.82);
-  }
-
-  .home-subtext-primary {
-    color: rgba(255, 255, 255, 0.97);
-    font-weight: 500;
-    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.46);
-  }
-
-  .home-subtext-secondary {
-    color: rgba(255, 255, 255, 0.9);
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.42);
-  }
-
-  .skills-marquee {
-    position: relative;
     width: 100vw;
-    margin-left: calc(50% - 50vw);
+    height: 100vh;
     overflow: hidden;
-  }
-
-  .skills-track {
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-    width: max-content;
-    animation-name: skills-scroll;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    will-change: transform;
-  }
-
-  .skills-track-reverse {
-    animation-direction: reverse;
-  }
-
-  .skill-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.7rem;
-    padding: 0.2rem 0;
-    font-size: clamp(1.35rem, 2.1vw, 2rem);
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.9);
-    transition: color 220ms ease, transform 220ms ease;
-    white-space: nowrap;
-  }
-
-  .skill-item:hover {
-    color: #ffd2e5;
-    transform: translateY(-1px);
-  }
-}
-
-@keyframes skills-scroll {
-  from {
-    transform: translateX(0%);
-  }
-
-  to {
-    transform: translateX(-25%);
+    position: relative;
   }
 }
