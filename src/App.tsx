@@ -83,7 +83,7 @@ function App() {
       <motion.nav
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.38, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+        transition={{ duration: 0.34, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
         style={{
           position: 'fixed',
           top: 0, left: 0, right: 0,
@@ -106,7 +106,7 @@ function App() {
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.38, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+        transition={{ duration: 0.34, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
         style={{
           position: 'absolute',
           left: '20px',
@@ -138,7 +138,7 @@ function App() {
         <motion.h1
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.95, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+          transition={{ duration: 0.90, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
           style={{
             margin: 0,
             fontFamily: "'Denton', 'Denton Expressive', 'Denton Text', 'Iowan Old Style', 'Baskerville', serif",
