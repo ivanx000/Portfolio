@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 
 import img1 from './assets/7C1DE476-39B7-4387-B12F-14946513A7ED.png'
 import img2 from './assets/b506f63c187f4fc202625926de4521d9.png'
@@ -10,23 +10,18 @@ import img6 from './assets/ffcdaf47af95d309bbe74e70128d0b95.png'
 import img7 from './assets/78ca28acbabff21940dbf6f1fad4648e.png'
 
 // ─── Animation timing (ms) ────────────────────────────────
-const IMAGE_STAGGER   = 100   // each image appears 100 ms after the last
-const TEXT_DELAY      = 500   // "Hey,", nav, label fade in after 500 ms
-const SPREAD_START    = 900   // images begin flying to final positions at 900 ms
-const IMAGE_SIZE      = '9%'  // slightly smaller cards for cleaner separation
-const HEY_OFFSET_X    = '-2.2%' // visual centering correction (left)
-const HEY_OFFSET_Y    = '-3.6%' // visual centering correction (up)
+const IMAGE_STAGGER   = 100
+const TEXT_DELAY      = 500
+const SPREAD_START    = 900
+const IMAGE_SIZE      = '9%'
+const HEY_OFFSET_X    = '-2.2%'
+const HEY_OFFSET_Y    = '-3.6%'
 
 // ─── Cluster centre ───────────────────────────────────────
-// All images are held at ~(46 %, 50 %) of the viewport before spreading.
-// Each image is absolutely positioned at its FINAL location; a CSS transform
-// offset (ox, oy) moves it to the cluster while in the "holding" phase.
-const CX = 46 // cluster centre x, in vw
-const CY = 50 // cluster centre y, in vh
+const CX = 46
+const CY = 50
 
 // ─── Image configuration ──────────────────────────────────
-// Positions measured from reference frames (795 × 503 px viewport).
-// All images use a uniform size to match the first image in the sequence.
 const imageConfigs = [
   { src: img1, left: '16%', top: '12%', zi: 20 },
   { src: img2, left: '35%', top: '34%', zi: 20 },
@@ -37,166 +32,288 @@ const imageConfigs = [
   { src: img7, left: '74%', top: '70%', zi: 20 },
 ]
 
-// Derive the transform offset that places each image's top-left corner
-// at the cluster centre point.
 function clusterOffset(left: string, top: string) {
-  const l = parseFloat(left)  // e.g. 17
-  const t = parseFloat(top)   // e.g. 11
+  const l = parseFloat(left)
+  const t = parseFloat(top)
   return { ox: `${CX - l}vw`, oy: `${CY - t}vh` }
 }
 
-// ─── Spread easing ───────────────────────────────────────
 const SPREAD_EASE = [0.25, 0.46, 0.45, 0.94] as const
+
+// ─── Google Profile Picture ───────────────────────────────
+function GooglePfp({ size = 140 }: { size?: number }) {
+  const cx = size / 2
+  const cy = size / 2
+  const ringMidR = size * 0.44
+  const ringW = size * 0.09
+  const circleR = size * 0.35
+
+  const gapDeg = 5
+  const segDeg = (360 - 4 * gapDeg) / 4
+  const colors = ['#4285F4', '#EA4335', '#FBBC04', '#34A853']
+
+  const toRad = (d: number) => (d * Math.PI) / 180
+  const arcPath = (startDeg: number, endDeg: number) => {
+    const sx = cx + ringMidR * Math.cos(toRad(startDeg))
+    const sy = cy + ringMidR * Math.sin(toRad(startDeg))
+    const ex = cx + ringMidR * Math.cos(toRad(endDeg))
+    const ey = cy + ringMidR * Math.sin(toRad(endDeg))
+    return `M${sx} ${sy} A${ringMidR} ${ringMidR} 0 0 1 ${ex} ${ey}`
+  }
+
+  return (
+    <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
+      <svg
+        width={size}
+        height={size}
+        viewBox={`0 0 ${size} ${size}`}
+        style={{ position: 'absolute', top: 0, left: 0 }}
+      >
+        {colors.map((color, i) => {
+          const startDeg = -90 + gapDeg / 2 + i * (segDeg + gapDeg)
+          const endDeg = startDeg + segDeg
+          return (
+            <path
+              key={i}
+              d={arcPath(startDeg, endDeg)}
+              fill="none"
+              stroke={color}
+              strokeWidth={ringW}
+              strokeLinecap="butt"
+            />
+          )
+        })}
+      </svg>
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: circleR * 2,
+          height: circleR * 2,
+          borderRadius: '50%',
+          background: '#4a7c59',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#fff',
+          fontSize: `${size * 0.26}px`,
+          fontFamily: 'Arial, sans-serif',
+          fontWeight: 400,
+          userSelect: 'none',
+        }}
+      >
+        I
+      </div>
+    </div>
+  )
+}
 
 // ─── Component ───────────────────────────────────────────
 function App() {
-  // How many images are currently showing at the cluster centre
   const [visibleCount, setVisibleCount] = useState(0)
-  // Whether images have started flying to their final positions
   const [spreading, setSpreading] = useState(false)
+
+  const outerRef = useRef<HTMLDivElement>(null)
+
+  const { scrollYProgress } = useScroll({
+    target: outerRef,
+    offset: ['start start', 'end end'],
+  })
+
+  // Hero text fades out during first 35% of scroll
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0])
+
+  // About section slides up from below — fully visible at 85% scroll
+  const aboutY = useTransform(scrollYProgress, [0, 0.85], ['100vh', '0vh'])
 
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = []
-
-    // Stagger each image appearing at the cluster centre
     for (let i = 0; i < imageConfigs.length; i++) {
       timers.push(setTimeout(() => setVisibleCount(i + 1), i * IMAGE_STAGGER))
     }
-
-    // Trigger the spread after text has had time to fade in
     timers.push(setTimeout(() => setSpreading(true), SPREAD_START))
-
     return () => timers.forEach(clearTimeout)
   }, [])
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100vh',
-        background: '#fff',
-        overflow: 'hidden',
-      }}
-    >
-      {/* ── Top navigation ─────────────────────────────────── */}
-      <motion.nav
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.34, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
-        style={{
-          position: 'fixed',
-          top: 0, left: 0, right: 0,
-          zIndex: 50,
-          display: 'flex',
-          justifyContent: 'space-between',
-          padding: '8px 20px',
-          fontSize: '11px',
-          fontFamily: "'Barlow', sans-serif",
-          fontWeight: 400,
-          color: '#000',
-        }}
-      >
-        <span>Ivan Xie</span>
-        <span>Software Engineer</span>
-        <span style={{ fontWeight: 700 }}>University of Toronto</span>
-      </motion.nav>
+    // Outer div gives the page its scrollable height (200vh = 100vh of scroll)
+    <div ref={outerRef} style={{ height: '200vh' }}>
 
-      {/* ── Portfolio / 2026 — left centre ─────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.34, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
-        style={{
-          position: 'absolute',
-          left: '20px',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 30,
-          fontSize: '11px',
-          fontFamily: "'Barlow', sans-serif",
-          fontWeight: 400,
-          lineHeight: 1.4,
-          color: '#000',
-        }}
-      >
-        <div>Portfolio</div>
-        <div>2026</div>
-      </motion.div>
-
-      {/* ── "Hey," headline ────────────────────────────────── */}
+      {/* Sticky viewport — all visual content lives here */}
       <div
         style={{
-          position: 'absolute',
-          top: '50vh',
-          left: '50vw',
-          transform: `translate3d(calc(-50% + ${HEY_OFFSET_X}), calc(-50% + ${HEY_OFFSET_Y}), 0)`,
-          zIndex: 40,
-          pointerEvents: 'none',
+          position: 'sticky',
+          top: 0,
+          height: '100vh',
+          overflow: 'hidden',
+          background: '#fff',
         }}
       >
-        <motion.h1
-          initial={{ opacity: 0, y: 18 }}
+
+        {/* ── Top navigation ─────────────────────────────────── */}
+        <motion.nav
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.90, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+          transition={{ duration: 0.34, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
           style={{
-            margin: 0,
-            fontFamily: "'Denton', 'Denton Expressive', 'Denton Text', 'Iowan Old Style', 'Baskerville', serif",
-            fontStyle: 'normal',
-            fontWeight: 100,
-            fontVariationSettings: "'wght' 120",
-            fontSize: 'clamp(10rem, 24vw, 31rem)',
-            lineHeight: 0.82,
-            letterSpacing: '-0.008em',
-            whiteSpace: 'nowrap',
+            position: 'absolute',
+            top: 0, left: 0, right: 0,
+            zIndex: 50,
+            display: 'flex',
+            justifyContent: 'space-between',
+            padding: '8px 20px',
+            fontSize: '11px',
+            fontFamily: "'Barlow', sans-serif",
+            fontWeight: 400,
             color: '#000',
-            userSelect: 'none',
           }}
         >
-          Hey,
-        </motion.h1>
-      </div>
+          <span>Ivan Xie</span>
+          <span>Software Engineer</span>
+          <span style={{ fontWeight: 700 }}>University of Toronto</span>
+        </motion.nav>
 
-      {/* ── Scattered images ───────────────────────────────── */}
-      {imageConfigs.map(({ src, left, top, zi }, i) => {
-        const { ox, oy } = clusterOffset(left, top)
-
-        return (
-          <motion.img
-            key={i}
-            src={src}
-            alt=""
-            // Start: offset to cluster centre, invisible
-            initial={{ x: ox, y: oy, opacity: 0, filter: 'grayscale(0%)' }}
-            // Phase A (not spreading): appear one-by-one at cluster centre in full colour
-            // Phase B (spreading): fly to final position, turn grey, reduce opacity
-            animate={
-              spreading
-                ? { x: 0, y: 0, opacity: 0.7, filter: 'grayscale(100%)' }
-                : { x: ox, y: oy, opacity: i < visibleCount ? 1 : 0, filter: 'grayscale(0%)' }
-            }
-            transition={
-              spreading
-                ? { duration: 0.9, ease: SPREAD_EASE }
-                : {
-                    opacity: { duration: 0.15, ease: 'easeOut' },
-                    x: { duration: 0 },
-                    y: { duration: 0 },
-                  }
-            }
+        {/* ── Hero fade wrapper — fades out on scroll ────────── */}
+        {/*    position: absolute; inset: 0 so children can use  */}
+        {/*    absolute positioning relative to this container.   */}
+        <motion.div
+          style={{
+            opacity: heroOpacity,
+            position: 'absolute',
+            inset: 0,
+            pointerEvents: 'none',
+            zIndex: 35,
+          }}
+        >
+          {/* ── Portfolio / 2026 — left centre ─────────────────── */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.34, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
             style={{
               position: 'absolute',
-              left,
-              top,
-              width: IMAGE_SIZE,
-              aspectRatio: '2 / 3',
-              zIndex: zi,
-              display: 'block',
-              objectFit: 'cover',
+              left: '20px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              fontSize: '11px',
+              fontFamily: "'Barlow', sans-serif",
+              fontWeight: 400,
+              lineHeight: 1.4,
+              color: '#000',
             }}
-          />
-        )
-      })}
+          >
+            <div>Portfolio</div>
+            <div>2026</div>
+          </motion.div>
+
+          {/* ── "Hey," headline ────────────────────────────────── */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '50vh',
+              left: '50vw',
+              transform: `translate3d(calc(-50% + ${HEY_OFFSET_X}), calc(-50% + ${HEY_OFFSET_Y}), 0)`,
+            }}
+          >
+            <motion.h1
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.90, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+              style={{
+                margin: 0,
+                fontFamily: "'Denton', 'Denton Expressive', 'Denton Text', 'Iowan Old Style', 'Baskerville', serif",
+                fontStyle: 'normal',
+                fontWeight: 100,
+                fontVariationSettings: "'wght' 120",
+                fontSize: 'clamp(10rem, 24vw, 31rem)',
+                lineHeight: 0.82,
+                letterSpacing: '-0.008em',
+                whiteSpace: 'nowrap',
+                color: '#000',
+                userSelect: 'none',
+              }}
+            >
+              Hey,
+            </motion.h1>
+          </div>
+        </motion.div>
+
+        {/* ── Scattered images ───────────────────────────────── */}
+        {imageConfigs.map(({ src, left, top, zi }, i) => {
+          const { ox, oy } = clusterOffset(left, top)
+          return (
+            <motion.img
+              key={i}
+              src={src}
+              alt=""
+              initial={{ x: ox, y: oy, opacity: 0, filter: 'grayscale(0%)' }}
+              animate={
+                spreading
+                  ? { x: 0, y: 0, opacity: 0.7, filter: 'grayscale(100%)' }
+                  : { x: ox, y: oy, opacity: i < visibleCount ? 1 : 0, filter: 'grayscale(0%)' }
+              }
+              transition={
+                spreading
+                  ? { duration: 0.9, ease: SPREAD_EASE }
+                  : {
+                      opacity: { duration: 0.15, ease: 'easeOut' },
+                      x: { duration: 0 },
+                      y: { duration: 0 },
+                    }
+              }
+              style={{
+                position: 'absolute',
+                left,
+                top,
+                width: IMAGE_SIZE,
+                aspectRatio: '2 / 3',
+                zIndex: zi,
+                display: 'block',
+                objectFit: 'cover',
+              }}
+            />
+          )
+        })}
+
+        {/* ── About section — slides up from below on scroll ─── */}
+        <motion.div
+          style={{
+            y: aboutY,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '100%',
+            background: '#fff',
+            zIndex: 45,
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0 6% 0 5%',
+            gap: '52px',
+          }}
+        >
+          <GooglePfp size={140} />
+          <p
+            style={{
+              margin: 0,
+              fontFamily: "'Barlow', sans-serif",
+              fontWeight: 800,
+              fontSize: 'clamp(1.55rem, 2.6vw, 2.9rem)',
+              lineHeight: 1.12,
+              letterSpacing: '-0.022em',
+              color: '#000',
+            }}
+          >
+            I'm Ivan, a Computer Science student at the University of Toronto
+            exploring the intersection of machine learning and software
+            engineering to create intelligent systems and purposeful digital
+            experiences for the next generation of users.
+          </p>
+        </motion.div>
+
+      </div>
     </div>
   )
 }
