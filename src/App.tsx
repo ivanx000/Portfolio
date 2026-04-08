@@ -46,6 +46,166 @@ function clusterOffset(left: string, top: string) {
 
 const SPREAD_EASE = [0.25, 0.46, 0.45, 0.94] as const
 
+// ─── Language colours (GitHub palette) ───────────────────
+const langColors: Record<string, string> = {
+  TypeScript:  '#3178c6',
+  Python:      '#3572A5',
+  Go:          '#00ADD8',
+  JavaScript:  '#f1e05a',
+  Java:        '#b07219',
+  'C++':       '#f34b7d',
+  Kotlin:      '#A97BFF',
+}
+
+// ─── Project data ─────────────────────────────────────────
+interface Repo {
+  name: string
+  description: string | null
+  url: string
+  language: string | null
+  stars: number
+  forks: number
+  fork: boolean
+}
+
+const projects: Repo[] = [
+  { name: 'Pipeline',              description: 'A Custom CI/CD Pipeline',                                                               url: 'https://github.com/ivanx000/Pipeline',              language: 'Go',          stars: 0, forks: 0, fork: false },
+  { name: 'githelp',               description: 'Terminal-native AI Git assistant with safety checks and approval workflows',             url: 'https://github.com/ivanx000/githelp',               language: 'Python',      stars: 0, forks: 0, fork: false },
+  { name: 'sami',                  description: 'Mobile self-improvement app focused on reducing distractions and building discipline',   url: 'https://github.com/ivanx000/sami',                  language: 'TypeScript',  stars: 0, forks: 0, fork: false },
+  { name: 'ca.bot',                description: 'Cryptocurrency arbitrage bot detecting price differences across exchanges in real-time', url: 'https://github.com/ivanx000/ca.bot',                language: 'C++',         stars: 0, forks: 0, fork: false },
+  { name: 'Parker',                description: 'Mobile app tracking parking locations with navigation assistance',                       url: 'https://github.com/ivanx000/Parker',                language: 'TypeScript',  stars: 0, forks: 0, fork: false },
+  { name: 'CalendarApp',           description: 'An AI powered calendar app',                                                            url: 'https://github.com/ivanx000/CalendarApp',           language: 'TypeScript',  stars: 0, forks: 0, fork: false },
+  { name: 'ShopOut',               description: 'AI-powered shopping cart assembly based on user descriptions',                          url: 'https://github.com/ivanx000/ShopOut',               language: 'TypeScript',  stars: 0, forks: 0, fork: false },
+  { name: 'NL2SQL',                description: 'Natural Language to SQL queries using AI',                                              url: 'https://github.com/ivanx000/NL2SQL',                language: 'Python',      stars: 0, forks: 0, fork: false },
+  { name: 'Nourish',               description: null,                                                                                    url: 'https://github.com/ivanx000/Nourish',               language: 'TypeScript',  stars: 0, forks: 0, fork: false },
+  { name: 'StretchApp',            description: 'Android stretch reminder application',                                                  url: 'https://github.com/ivanx000/StretchApp',            language: 'Kotlin',      stars: 0, forks: 0, fork: false },
+  { name: 'NBA-Shot-Analysis-Tool',description: 'Python script to analyze NBA shot data',                                                url: 'https://github.com/ivanx000/NBA-Shot-Analysis-Tool',language: 'Python',      stars: 0, forks: 0, fork: false },
+  { name: 'CSC316-A3',             description: 'NBA shot selection visualization using synthetic data',                                 url: 'https://github.com/ivanx000/CSC316-A3',             language: 'JavaScript',  stars: 0, forks: 0, fork: false },
+  { name: 'MWE',                   description: 'Minecraft Forge 1.8.9 mod for PVP players with Mega Walls features',                    url: 'https://github.com/ivanx000/MWE',                   language: 'Java',        stars: 0, forks: 0, fork: true  },
+  { name: 'M5-Coding-Homework',    description: null,                                                                                    url: 'https://github.com/ivanx000/M5-Coding-Homework',    language: 'Java',        stars: 0, forks: 0, fork: false },
+  { name: 'M4-Code-Assignment',    description: null,                                                                                    url: 'https://github.com/ivanx000/M4-Code-Assignment',    language: 'Java',        stars: 0, forks: 0, fork: false },
+  { name: 'M2-Assignment',         description: null,                                                                                    url: 'https://github.com/ivanx000/M2-Assignment',         language: 'Java',        stars: 0, forks: 0, fork: false },
+  { name: 'NumberTriangle',        description: 'Lab 3 activity',                                                                        url: 'https://github.com/ivanx000/NumberTriangle',        language: 'Java',        stars: 0, forks: 0, fork: true  },
+  { name: 'CSC111-Project1',       description: null,                                                                                    url: 'https://github.com/ivanx000/CSC111-Project1',       language: null,          stars: 0, forks: 0, fork: false },
+  { name: 'Portfolio',             description: 'Personal Portfolio Website',                                                            url: 'https://github.com/ivanx000/Portfolio',             language: 'TypeScript',  stars: 0, forks: 0, fork: false },
+  { name: 'skills',                description: 'Public repository for Agent Skills',                                                    url: 'https://github.com/ivanx000/skills',                language: null,          stars: 0, forks: 0, fork: true  },
+]
+
+// ─── Repo card (GitHub-style) ─────────────────────────────
+function RepoCard({ repo }: { repo: Repo }) {
+  const dotColor = repo.language ? (langColors[repo.language] ?? '#8b949e') : null
+
+  return (
+    <a
+      href={repo.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ textDecoration: 'none', display: 'block' }}
+    >
+      <div
+        style={{
+          border: '1px solid #d0d7de',
+          borderRadius: '6px',
+          padding: '16px',
+          background: '#fff',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '8px',
+          height: '100%',
+          boxSizing: 'border-box',
+          cursor: 'pointer',
+          transition: 'border-color 0.2s, transform 0.2s, box-shadow 0.2s',
+        }}
+        onMouseEnter={e => {
+          e.currentTarget.style.borderColor = '#000'
+          e.currentTarget.style.transform = 'translateY(-6px)'
+          e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.1)'
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.borderColor = '#d0d7de'
+          e.currentTarget.style.transform = 'translateY(0)'
+          e.currentTarget.style.boxShadow = 'none'
+        }}
+      >
+        {/* Header row */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* Repo icon */}
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="#57606a" style={{ flexShrink: 0 }}>
+            <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z" />
+          </svg>
+          {/* Name */}
+          <span style={{
+            fontFamily: "'Barlow', sans-serif",
+            fontWeight: 600,
+            fontSize: '14px',
+            color: '#0969da',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}>
+            {repo.name}
+          </span>
+          {/* Public badge */}
+          <span style={{
+            fontFamily: "'Barlow', sans-serif",
+            fontSize: '11px',
+            fontWeight: 500,
+            color: '#57606a',
+            border: '1px solid #d0d7de',
+            borderRadius: '2em',
+            padding: '0 7px',
+            lineHeight: '18px',
+            flexShrink: 0,
+          }}>
+            {repo.fork ? 'Forked' : 'Public'}
+          </span>
+        </div>
+
+        {/* Description */}
+        {repo.description && (
+          <p style={{
+            margin: 0,
+            fontFamily: "'Barlow', sans-serif",
+            fontSize: '12px',
+            color: '#57606a',
+            lineHeight: 1.5,
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}>
+            {repo.description}
+          </p>
+        )}
+
+        {/* Footer */}
+        {(repo.language || repo.stars > 0 || repo.forks > 0) && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: 'auto' }}>
+            {repo.language && (
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontFamily: "'Barlow', sans-serif", fontSize: '12px', color: '#57606a' }}>
+                <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: dotColor ?? '#8b949e', display: 'inline-block', flexShrink: 0 }} />
+                {repo.language}
+              </span>
+            )}
+            {repo.stars > 0 && (
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontFamily: "'Barlow', sans-serif", fontSize: '12px', color: '#57606a' }}>
+                <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
+                {repo.stars}
+              </span>
+            )}
+            {repo.forks > 0 && (
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontFamily: "'Barlow', sans-serif", fontSize: '12px', color: '#57606a' }}>
+                <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0z"/></svg>
+                {repo.forks}
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+    </a>
+  )
+}
+
 // ─── Google Profile Picture ───────────────────────────────
 function GooglePfp({ size = 140 }: { size?: number }) {
   const cx = size / 2
@@ -122,20 +282,15 @@ function App() {
   const [risenCount, setRisenCount] = useState(0)   // how many images have risen to cluster
   const [spreading, setSpreading] = useState(false) // all fly to final positions
 
-  // useScroll() with no args tracks window scroll
-  // The outer div is 200vh tall, so scrollY goes from 0 to 100vh (one viewport)
   const { scrollY } = useScroll()
 
-  // Hero text fades out over the first 40% of the scrollable distance (0.4 * 100vh)
-  const heroOpacity = useTransform(scrollY, [0, window.innerHeight * 0.4], [1, 0])
+  // Hero text fades as content scrolls up from below
+  const heroOpacity = useTransform(scrollY, [0, window.innerHeight * 0.5], [1, 0])
 
   // "Hey," zooms toward viewer and blurs as it exits
-  const heyScale = useTransform(scrollY, [0, window.innerHeight * 0.4], [1, 1.15])
-  const heyBlurNum = useTransform(scrollY, [0, window.innerHeight * 0.4], [0, 10])
+  const heyScale = useTransform(scrollY, [0, window.innerHeight * 0.5], [1, 1.15])
+  const heyBlurNum = useTransform(scrollY, [0, window.innerHeight * 0.5], [0, 10])
   const heyFilter = useTransform(heyBlurNum, (v) => `blur(${v}px)`)
-
-  // About section slides up from below — fully in view at 85% of 100vh scroll
-  const aboutY = useTransform(scrollY, [0, window.innerHeight * 0.85], ['0vh', '-100vh'])
 
 
   useEffect(() => {
@@ -151,19 +306,9 @@ function App() {
   }, [])
 
   return (
-    // Outer div gives the page its scrollable height (200vh = 100vh of scroll)
-    <div style={{ height: '200vh' }}>
-
-      {/* Sticky viewport — all visual content lives here */}
-      <div
-        style={{
-          position: 'sticky',
-          top: 0,
-          height: '100vh',
-          overflow: 'hidden',
-          background: '#fff',
-        }}
-      >
+    <>
+      {/* ── Fixed hero — background stays put while content scrolls ── */}
+      <div style={{ position: 'fixed', inset: 0, background: '#fff', overflow: 'hidden', zIndex: 0 }}>
 
         {/* ── Top navigation ─────────────────────────────────── */}
         <motion.nav
@@ -188,9 +333,7 @@ function App() {
           <span style={{ fontWeight: 700 }}>University of Toronto</span>
         </motion.nav>
 
-        {/* ── Hero fade wrapper — fades out on scroll ────────── */}
-        {/*    position: absolute; inset: 0 so children can use  */}
-        {/*    absolute positioning relative to this container.   */}
+        {/* ── Hero text — fades as content scrolls up ─────────── */}
         <motion.div
           style={{
             opacity: heroOpacity,
@@ -296,18 +439,16 @@ function App() {
             )
           })}
         </motion.div>
+      </div>
 
-        {/* ── About section — slides up from below on scroll ─── */}
-        <motion.div
+      {/* ── Scrollable content — slides up over the fixed hero ── */}
+      <div style={{ position: 'relative', zIndex: 10 }}>
+        {/* Spacer so hero is fully visible at scroll=0 */}
+        <div style={{ height: '100vh' }} />
+
+        {/* ── About section ──────────────────────────────────── */}
+        <div
           style={{
-            y: aboutY,
-            position: 'absolute',
-            top: '100%',
-            left: 0,
-            right: 0,
-            height: '100%',
-            background: 'transparent',
-            zIndex: 45,
             display: 'flex',
             flexDirection: 'column',
             padding: '5% 4% 0 12.35%',
@@ -345,24 +486,53 @@ function App() {
             </motion.p>
           </div>
 
-          {/* ── Separator line — width controls length, marginTop controls spacing */}
+          {/* ── Separator line ─────────────────────────────────── */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
             style={{
-              marginTop: '32px',  // ← increase to move down, decrease to move up
-              width: '77.8%',       // ← increase to make longer, decrease to make shorter
+              marginTop: '32px',
+              width: '77.8%',
               marginLeft: '200px',
               height: '1px',
               background: '#000000',
             }}
           />
-        </motion.div>
+        </div>
 
+        {/* ── Projects section ───────────────────────────────── */}
+        <div style={{ padding: '72px 0 80px 0', position: 'relative' }}>
+          {/* "Projects" label — ~150px from left edge, matching Portfolio/2026 style */}
+          <div style={{
+            position: 'absolute',
+            left: '150px',
+            top: '72px',
+            fontSize: '11px',
+            fontFamily: "'Barlow', sans-serif",
+            fontWeight: 500,
+            lineHeight: 1.4,
+            color: '#111',
+          }}>
+            <div>Projects</div>
+          </div>
+
+          {/* 2-column cards grid, horizontally centered */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '360px 360px',
+            gap: '12px',
+            margin: '0 auto',
+            width: '732px',
+          }}>
+            {projects.map(repo => (
+              <RepoCard key={repo.name} repo={repo} />
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
