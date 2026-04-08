@@ -122,6 +122,11 @@ function App() {
   // Hero text fades out over the first 40% of the scrollable distance (0.4 * 100vh)
   const heroOpacity = useTransform(scrollY, [0, window.innerHeight * 0.4], [1, 0])
 
+  // "Hey," zooms toward viewer and blurs as it exits
+  const heyScale = useTransform(scrollY, [0, window.innerHeight * 0.4], [1, 1.15])
+  const heyBlurNum = useTransform(scrollY, [0, window.innerHeight * 0.4], [0, 10])
+  const heyFilter = useTransform(heyBlurNum, (v) => `blur(${v}px)`)
+
   // About section slides up from below — fully in view at 85% of 100vh scroll
   const aboutY = useTransform(scrollY, [0, window.innerHeight * 0.85], ['0vh', '-100vh'])
 
@@ -214,6 +219,7 @@ function App() {
               transform: `translate3d(calc(-50% + ${HEY_OFFSET_X}), calc(-50% + ${HEY_OFFSET_Y}), 0)`,
             }}
           >
+            <motion.div style={{ scale: heyScale, filter: heyFilter, transformOrigin: 'center center' }}>
             <div style={{ transform: 'scaleX(0.88)', transformOrigin: 'center center' }}>
             <motion.h1
               initial={{ opacity: 0, y: 18 }}
@@ -235,6 +241,7 @@ function App() {
               Hey,
             </motion.h1>
             </div>
+            </motion.div>
           </div>
         </motion.div>
 
@@ -290,7 +297,7 @@ function App() {
             zIndex: 45,
             display: 'flex',
             alignItems: 'flex-start',
-            padding: '5% 6% 0 5%',
+            padding: '5% 10% 0 10%',
             gap: '40px',
           }}
         >
@@ -300,16 +307,13 @@ function App() {
               margin: 0,
               fontFamily: "'Barlow', sans-serif",
               fontWeight: 800,
-              fontSize: 'clamp(1.4rem, 3.4vw, 3.8rem)',
+              fontSize: 'clamp(1.8rem, 4.2vw, 5rem)',
               lineHeight: 1.1,
               letterSpacing: '-0.022em',
               color: '#000',
             }}
           >
-            I'm Ivan, a Computer Science student at the University of Toronto
-            exploring the intersection of machine learning and software
-            engineering to create intelligent systems and purposeful digital
-            experiences for the next generation of users.
+            I'm Ivan, a Computer Science student at the University of Toronto. I like to build things.
           </p>
         </motion.div>
 
