@@ -163,12 +163,12 @@ function App() {
             padding: '8px 20px',
             fontSize: '11px',
             fontFamily: "'Barlow', sans-serif",
-            fontWeight: 400,
-            color: '#000',
+            fontWeight: 500,
+            color: '#111',
           }}
         >
           <span>Ivan Xie</span>
-          <span>Software Engineer</span>
+          <span style={{ marginRight: '8%' }}>Software Engineer</span>
           <span style={{ fontWeight: 700 }}>University of Toronto</span>
         </motion.nav>
 
@@ -196,9 +196,9 @@ function App() {
               transform: 'translateY(-50%)',
               fontSize: '11px',
               fontFamily: "'Barlow', sans-serif",
-              fontWeight: 400,
+              fontWeight: 500,
               lineHeight: 1.4,
-              color: '#000',
+              color: '#111',
             }}
           >
             <div>Portfolio</div>
@@ -214,19 +214,19 @@ function App() {
               transform: `translate3d(calc(-50% + ${HEY_OFFSET_X}), calc(-50% + ${HEY_OFFSET_Y}), 0)`,
             }}
           >
+            <div style={{ transform: 'scaleX(0.88)', transformOrigin: 'center center' }}>
             <motion.h1
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.90, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
               style={{
                 margin: 0,
-                fontFamily: "'Denton', 'Denton Expressive', 'Denton Text', 'Iowan Old Style', 'Baskerville', serif",
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontStyle: 'normal',
-                fontWeight: 100,
-                fontVariationSettings: "'wght' 120",
-                fontSize: 'clamp(10rem, 24vw, 31rem)',
+                fontWeight: 300,
+                fontSize: 'clamp(11rem, 27vw, 34rem)',
                 lineHeight: 0.82,
-                letterSpacing: '-0.008em',
+                letterSpacing: '-0.01em',
                 whiteSpace: 'nowrap',
                 color: '#000',
                 userSelect: 'none',
@@ -234,6 +234,7 @@ function App() {
             >
               Hey,
             </motion.h1>
+            </div>
           </div>
         </motion.div>
 
