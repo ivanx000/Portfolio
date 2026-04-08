@@ -10,9 +10,13 @@ import img6 from './assets/ffcdaf47af95d309bbe74e70128d0b95.png'
 import img7 from './assets/78ca28acbabff21940dbf6f1fad4648e.png'
 
 // ─── Animation timing (ms) ────────────────────────────────
-const IMAGE_STAGGER   = 100
-const TEXT_DELAY      = 500
-const SPREAD_START    = 900
+const IMG_FADE_DUR    = 15    // each image fades in over this long
+const IMG_RISE_DUR    = 28    // each image rises over this long
+const IMG_CYCLE       = IMG_FADE_DUR + IMG_RISE_DUR  // ~43ms per image → 7 × 43 ≈ 300ms
+const ALL_IMAGES_DONE = 300   // 0.3s for all images
+const HEY_FADE_DUR    = 1100  // ms — Hey, fade duration (used to calc spread timing)
+const TEXT_DELAY      = ALL_IMAGES_DONE          // text starts right after images done
+const SPREAD_START    = ALL_IMAGES_DONE + HEY_FADE_DUR / 2  // spread at halfway through text fade
 const IMAGE_SIZE      = '9%'
 const HEY_OFFSET_X    = '-2.2%'
 const HEY_OFFSET_Y    = '-3.6%'
@@ -23,11 +27,11 @@ const CY = 50
 
 // ─── Image configuration ──────────────────────────────────
 const imageConfigs = [
-  { src: img1, left: '16%', top: '12%', zi: 20 },
-  { src: img2, left: '35%', top: '34%', zi: 20 },
-  { src: img3, left: '62%', top: '12%', zi: 20 },
+  { src: img1, left: '16%', top: '4%', zi: 20 },
+  { src: img2, left: '28%', top: '34%', zi: 20 },
+  { src: img3, left: '65%', top: '4%', zi: 20 },
   { src: img4, left: '84%', top: '34%', zi: 20 },
-  { src: img5, left:  '6%', top: '61%', zi: 20 },
+  { src: img5, left:  '6%', top: '70%', zi: 20 },
   { src: img6, left: '52%', top: '70%', zi: 20 },
   { src: img7, left: '74%', top: '70%', zi: 20 },
 ]
@@ -35,7 +39,9 @@ const imageConfigs = [
 function clusterOffset(left: string, top: string) {
   const l = parseFloat(left)
   const t = parseFloat(top)
-  return { ox: `${CX - l}vw`, oy: `${CY - t}vh` }
+  const ox = (CX - l) / 100 * window.innerWidth
+  const oy = (CY - t) / 100 * window.innerHeight
+  return { ox, oy }
 }
 
 const SPREAD_EASE = [0.25, 0.46, 0.45, 0.94] as const
@@ -112,8 +118,9 @@ function GooglePfp({ size = 140 }: { size?: number }) {
 
 // ─── Component ───────────────────────────────────────────
 function App() {
-  const [visibleCount, setVisibleCount] = useState(0)
-  const [spreading, setSpreading] = useState(false)
+  const [shownCount, setShownCount] = useState(0)   // how many images have faded in
+  const [risenCount, setRisenCount] = useState(0)   // how many images have risen to cluster
+  const [spreading, setSpreading] = useState(false) // all fly to final positions
 
   // useScroll() with no args tracks window scroll
   // The outer div is 200vh tall, so scrollY goes from 0 to 100vh (one viewport)
@@ -130,10 +137,14 @@ function App() {
   // About section slides up from below — fully in view at 85% of 100vh scroll
   const aboutY = useTransform(scrollY, [0, window.innerHeight * 0.85], ['0vh', '-100vh'])
 
+
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = []
-    for (let i = 0; i < imageConfigs.length; i++) {
-      timers.push(setTimeout(() => setVisibleCount(i + 1), i * IMAGE_STAGGER))
+    for (let i = 0; i < 7; i++) {
+      const fadeAt = i * IMG_CYCLE
+      const riseAt = fadeAt + IMG_FADE_DUR
+      timers.push(setTimeout(() => setShownCount(i + 1), fadeAt))
+      timers.push(setTimeout(() => setRisenCount(i + 1), riseAt))
     }
     timers.push(setTimeout(() => setSpreading(true), SPREAD_START))
     return () => timers.forEach(clearTimeout)
@@ -156,9 +167,9 @@ function App() {
 
         {/* ── Top navigation ─────────────────────────────────── */}
         <motion.nav
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 17 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.34, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+          transition={{ duration: HEY_FADE_DUR / 1000, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
           style={{
             position: 'absolute',
             top: 0, left: 0, right: 0,
@@ -191,9 +202,9 @@ function App() {
         >
           {/* ── Portfolio / 2026 — left centre ─────────────────── */}
           <motion.div
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 0, y: 17 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.34, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+            transition={{ duration: HEY_FADE_DUR / 1000, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
             style={{
               position: 'absolute',
               left: '20px',
@@ -222,9 +233,9 @@ function App() {
             <motion.div style={{ scale: heyScale, filter: heyFilter, transformOrigin: 'center center' }}>
             <div style={{ transform: 'scaleX(0.88)', transformOrigin: 'center center' }}>
             <motion.h1
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.90, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+              transition={{ duration: HEY_FADE_DUR / 1000, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
               style={{
                 margin: 0,
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
@@ -254,20 +265,22 @@ function App() {
                 key={i}
                 src={src}
                 alt=""
-                initial={{ x: ox, y: oy, opacity: 0, filter: 'grayscale(0%)' }}
+                initial={{ x: ox, y: oy + 60, opacity: 0, filter: 'grayscale(0%)' }}
                 animate={
                   spreading
-                    ? { x: 0, y: 0, opacity: 0.35, filter: 'grayscale(100%)' }
-                    : { x: ox, y: oy, opacity: i < visibleCount ? 1 : 0, filter: 'grayscale(0%)' }
+                    ? { x: 0, y: 0, opacity: 0.22, filter: 'grayscale(100%)' }
+                    : i < risenCount
+                    ? { x: ox, y: oy, opacity: 1, filter: 'grayscale(0%)' }
+                    : i < shownCount
+                    ? { x: ox, y: oy + 60, opacity: 1, filter: 'grayscale(0%)' }
+                    : { x: ox, y: oy + 60, opacity: 0, filter: 'grayscale(0%)' }
                 }
                 transition={
                   spreading
                     ? { duration: 0.9, ease: SPREAD_EASE }
-                    : {
-                        opacity: { duration: 0.15, ease: 'easeOut' },
-                        x: { duration: 0 },
-                        y: { duration: 0 },
-                      }
+                    : i < risenCount
+                    ? { y: { duration: IMG_RISE_DUR / 1000, ease: 'easeOut' }, opacity: { duration: 0 }, x: { duration: 0 } }
+                    : { opacity: { duration: IMG_FADE_DUR / 1000, ease: 'easeOut' }, y: { duration: 0 }, x: { duration: 0 } }
                 }
                 style={{
                   position: 'absolute',
@@ -297,24 +310,38 @@ function App() {
             zIndex: 45,
             display: 'flex',
             alignItems: 'flex-start',
-            padding: '5% 10% 0 10%',
+            padding: '5% 4% 0 12.35%',
             gap: '40px',
           }}
         >
-          <GooglePfp size={160} />
-          <p
+          <motion.div
+            initial={{ opacity: 0, y: 17 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            style={{ flexShrink: 0 }}
+          >
+            <GooglePfp size={160} />
+          </motion.div>
+          <motion.p
+            initial={{ opacity: 0, y: 17 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
             style={{
               margin: 0,
               fontFamily: "'Barlow', sans-serif",
               fontWeight: 800,
-              fontSize: 'clamp(1.8rem, 4.2vw, 5rem)',
+              fontSize: 'clamp(1.8rem, 4.0vw, 5rem)',
               lineHeight: 1.1,
               letterSpacing: '-0.022em',
               color: '#000',
             }}
           >
-            I'm Ivan, a Computer Science student at the University of Toronto. I like to build things.
-          </p>
+            I'm Ivan, a Computer Science<br />
+            student at the University of Toronto.<br />
+            I like to build things.
+          </motion.p>
         </motion.div>
 
       </div>
