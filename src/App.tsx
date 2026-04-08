@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
 import img1 from './assets/7C1DE476-39B7-4387-B12F-14946513A7ED.png'
@@ -44,9 +44,9 @@ const SPREAD_EASE = [0.25, 0.46, 0.45, 0.94] as const
 function GooglePfp({ size = 140 }: { size?: number }) {
   const cx = size / 2
   const cy = size / 2
-  const ringMidR = size * 0.44
-  const ringW = size * 0.09
-  const circleR = size * 0.35
+  const ringMidR = size * 0.47
+  const ringW = size * 0.025
+  const circleR = size * 0.42
 
   const gapDeg = 5
   const segDeg = (360 - 4 * gapDeg) / 4
@@ -93,7 +93,7 @@ function GooglePfp({ size = 140 }: { size?: number }) {
           width: circleR * 2,
           height: circleR * 2,
           borderRadius: '50%',
-          background: '#4a7c59',
+          background: '#33691f',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -115,18 +115,15 @@ function App() {
   const [visibleCount, setVisibleCount] = useState(0)
   const [spreading, setSpreading] = useState(false)
 
-  const outerRef = useRef<HTMLDivElement>(null)
+  // useScroll() with no args tracks window scroll
+  // The outer div is 200vh tall, so scrollY goes from 0 to 100vh (one viewport)
+  const { scrollY } = useScroll()
 
-  const { scrollYProgress } = useScroll({
-    target: outerRef,
-    offset: ['start start', 'end end'],
-  })
+  // Hero text fades out over the first 40% of the scrollable distance (0.4 * 100vh)
+  const heroOpacity = useTransform(scrollY, [0, window.innerHeight * 0.4], [1, 0])
 
-  // Hero text fades out during first 35% of scroll
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0])
-
-  // About section slides up from below — fully visible at 85% scroll
-  const aboutY = useTransform(scrollYProgress, [0, 0.85], ['100vh', '0vh'])
+  // About section slides up from below — fully in view at 85% of 100vh scroll
+  const aboutY = useTransform(scrollY, [0, window.innerHeight * 0.85], ['100vh', '0vh'])
 
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = []
@@ -139,7 +136,7 @@ function App() {
 
   return (
     // Outer div gives the page its scrollable height (200vh = 100vh of scroll)
-    <div ref={outerRef} style={{ height: '200vh' }}>
+    <div style={{ height: '200vh' }}>
 
       {/* Sticky viewport — all visual content lives here */}
       <div
@@ -286,7 +283,7 @@ function App() {
             left: 0,
             right: 0,
             height: '100%',
-            background: '#fff',
+            background: 'transparent',
             zIndex: 45,
             display: 'flex',
             alignItems: 'center',
@@ -294,7 +291,7 @@ function App() {
             gap: '52px',
           }}
         >
-          <GooglePfp size={140} />
+          <GooglePfp size={190} />
           <p
             style={{
               margin: 0,
