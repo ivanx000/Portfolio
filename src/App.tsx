@@ -14,7 +14,7 @@ const IMG_FADE_DUR    = 15    // each image fades in over this long
 const IMG_RISE_DUR    = 28    // each image rises over this long
 const IMG_CYCLE       = IMG_FADE_DUR + IMG_RISE_DUR  // ~43ms per image → 7 × 43 ≈ 300ms
 const ALL_IMAGES_DONE = 300   // 0.3s for all images
-const HEY_FADE_DUR    = 1100  // ms — Hey, fade duration (used to calc spread timing)
+const HEY_FADE_DUR    = 600   // ms — Hey, fade duration (used to calc spread timing)
 const TEXT_DELAY      = ALL_IMAGES_DONE          // text starts right after images done
 const SPREAD_START    = ALL_IMAGES_DONE + HEY_FADE_DUR / 2  // spread at halfway through text fade
 const IMAGE_SIZE      = '9%'
@@ -82,25 +82,25 @@ const projects: Repo[] = [
   { name: 'NBA-Shot-Analysis-Tool',description: 'Python script to analyze NBA shot data',                                                url: 'https://github.com/ivanx000/NBA-Shot-Analysis-Tool',language: 'Python',      stars: 0, forks: 0, fork: false },
   { name: 'CSC316-A3',             description: 'NBA shot selection visualization using synthetic data',                                 url: 'https://github.com/ivanx000/CSC316-A3',             language: 'JavaScript',  stars: 0, forks: 0, fork: false },
   { name: 'MWE',                   description: 'Minecraft Forge 1.8.9 mod for PVP players with Mega Walls features',                    url: 'https://github.com/ivanx000/MWE',                   language: 'Java',        stars: 0, forks: 0, fork: true  },
-  { name: 'M5-Coding-Homework',    description: null,                                                                                    url: 'https://github.com/ivanx000/M5-Coding-Homework',    language: 'Java',        stars: 0, forks: 0, fork: false },
-  { name: 'M4-Code-Assignment',    description: null,                                                                                    url: 'https://github.com/ivanx000/M4-Code-Assignment',    language: 'Java',        stars: 0, forks: 0, fork: false },
-  { name: 'M2-Assignment',         description: null,                                                                                    url: 'https://github.com/ivanx000/M2-Assignment',         language: 'Java',        stars: 0, forks: 0, fork: false },
-  { name: 'NumberTriangle',        description: 'Lab 3 activity',                                                                        url: 'https://github.com/ivanx000/NumberTriangle',        language: 'Java',        stars: 0, forks: 0, fork: true  },
-  { name: 'CSC111-Project1',       description: null,                                                                                    url: 'https://github.com/ivanx000/CSC111-Project1',       language: null,          stars: 0, forks: 0, fork: false },
   { name: 'Portfolio',             description: 'Personal Portfolio Website',                                                            url: 'https://github.com/ivanx000/Portfolio',             language: 'TypeScript',  stars: 0, forks: 0, fork: false },
   { name: 'skills',                description: 'Public repository for Agent Skills',                                                    url: 'https://github.com/ivanx000/skills',                language: null,          stars: 0, forks: 0, fork: true  },
+  { name: 'ry-cha/sleepi',         description: 'hack western 2025',                                                                    url: 'https://github.com/ry-cha/sleepi',                  language: 'JavaScript',  stars: 0, forks: 0, fork: false },
 ]
 
 // ─── Repo card (GitHub-style) ─────────────────────────────
-function RepoCard({ repo }: { repo: Repo }) {
+function RepoCard({ repo, index }: { repo: Repo; index: number }) {
   const dotColor = repo.language ? (langColors[repo.language] ?? '#8b949e') : null
 
   return (
-    <a
+    <motion.a
       href={repo.url}
       target="_blank"
       rel="noopener noreferrer"
       style={{ textDecoration: 'none', display: 'block' }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.2, delay: (index % 2) * 0.06, ease: 'easeOut' }}
     >
       <div
         style={{
@@ -202,7 +202,7 @@ function RepoCard({ repo }: { repo: Repo }) {
           </div>
         )}
       </div>
-    </a>
+    </motion.a>
   )
 }
 
@@ -457,19 +457,19 @@ function App() {
           {/* pfp + text row */}
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '40px' }}>
             <motion.div
-              initial={{ opacity: 0, y: 17 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
               style={{ flexShrink: 0 }}
             >
               <GooglePfp size={160} />
             </motion.div>
             <motion.p
-              initial={{ opacity: 0, y: 17 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.2, delay: 0.05, ease: 'easeOut' }}
               style={{
                 margin: 0,
                 fontFamily: "'Barlow', sans-serif",
@@ -490,8 +490,8 @@ function App() {
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.2, delay: 0.1, ease: 'easeOut' }}
             style={{
               marginTop: '32px',
               width: '77.8%',
@@ -526,8 +526,8 @@ function App() {
             margin: '0 auto',
             width: '732px',
           }}>
-            {projects.map(repo => (
-              <RepoCard key={repo.name} repo={repo} />
+            {projects.map((repo, i) => (
+              <RepoCard key={repo.name} repo={repo} index={i} />
             ))}
           </div>
         </div>
