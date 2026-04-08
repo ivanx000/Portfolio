@@ -98,7 +98,7 @@ function GooglePfp({ size = 140 }: { size?: number }) {
           alignItems: 'center',
           justifyContent: 'center',
           color: '#fff',
-          fontSize: `${size * 0.26}px`,
+          fontSize: `${size * 0.46}px`,
           fontFamily: 'Arial, sans-serif',
           fontWeight: 400,
           userSelect: 'none',
@@ -123,7 +123,7 @@ function App() {
   const heroOpacity = useTransform(scrollY, [0, window.innerHeight * 0.4], [1, 0])
 
   // About section slides up from below — fully in view at 85% of 100vh scroll
-  const aboutY = useTransform(scrollY, [0, window.innerHeight * 0.85], ['100vh', '0vh'])
+  const aboutY = useTransform(scrollY, [0, window.innerHeight * 0.85], ['0vh', '-100vh'])
 
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = []
@@ -238,67 +238,69 @@ function App() {
         </motion.div>
 
         {/* ── Scattered images ───────────────────────────────── */}
-        {imageConfigs.map(({ src, left, top, zi }, i) => {
-          const { ox, oy } = clusterOffset(left, top)
-          return (
-            <motion.img
-              key={i}
-              src={src}
-              alt=""
-              initial={{ x: ox, y: oy, opacity: 0, filter: 'grayscale(0%)' }}
-              animate={
-                spreading
-                  ? { x: 0, y: 0, opacity: 0.7, filter: 'grayscale(100%)' }
-                  : { x: ox, y: oy, opacity: i < visibleCount ? 1 : 0, filter: 'grayscale(0%)' }
-              }
-              transition={
-                spreading
-                  ? { duration: 0.9, ease: SPREAD_EASE }
-                  : {
-                      opacity: { duration: 0.15, ease: 'easeOut' },
-                      x: { duration: 0 },
-                      y: { duration: 0 },
-                    }
-              }
-              style={{
-                position: 'absolute',
-                left,
-                top,
-                width: IMAGE_SIZE,
-                aspectRatio: '2 / 3',
-                zIndex: zi,
-                display: 'block',
-                objectFit: 'cover',
-              }}
-            />
-          )
-        })}
+        <motion.div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 20 }}>
+          {imageConfigs.map(({ src, left, top }, i) => {
+            const { ox, oy } = clusterOffset(left, top)
+            return (
+              <motion.img
+                key={i}
+                src={src}
+                alt=""
+                initial={{ x: ox, y: oy, opacity: 0, filter: 'grayscale(0%)' }}
+                animate={
+                  spreading
+                    ? { x: 0, y: 0, opacity: 0.35, filter: 'grayscale(100%)' }
+                    : { x: ox, y: oy, opacity: i < visibleCount ? 1 : 0, filter: 'grayscale(0%)' }
+                }
+                transition={
+                  spreading
+                    ? { duration: 0.9, ease: SPREAD_EASE }
+                    : {
+                        opacity: { duration: 0.15, ease: 'easeOut' },
+                        x: { duration: 0 },
+                        y: { duration: 0 },
+                      }
+                }
+                style={{
+                  position: 'absolute',
+                  left,
+                  top,
+                  width: IMAGE_SIZE,
+                  aspectRatio: '2 / 3',
+                  display: 'block',
+                  objectFit: 'cover',
+                  pointerEvents: 'none',
+                }}
+              />
+            )
+          })}
+        </motion.div>
 
         {/* ── About section — slides up from below on scroll ─── */}
         <motion.div
           style={{
             y: aboutY,
             position: 'absolute',
-            top: 0,
+            top: '100%',
             left: 0,
             right: 0,
             height: '100%',
             background: 'transparent',
             zIndex: 45,
             display: 'flex',
-            alignItems: 'center',
-            padding: '0 6% 0 5%',
-            gap: '52px',
+            alignItems: 'flex-start',
+            padding: '5% 6% 0 5%',
+            gap: '40px',
           }}
         >
-          <GooglePfp size={190} />
+          <GooglePfp size={160} />
           <p
             style={{
               margin: 0,
               fontFamily: "'Barlow', sans-serif",
               fontWeight: 800,
-              fontSize: 'clamp(1.55rem, 2.6vw, 2.9rem)',
-              lineHeight: 1.12,
+              fontSize: 'clamp(1.4rem, 3.4vw, 3.8rem)',
+              lineHeight: 1.1,
               letterSpacing: '-0.022em',
               color: '#000',
             }}
