@@ -309,39 +309,56 @@ function App() {
             background: 'transparent',
             zIndex: 45,
             display: 'flex',
-            alignItems: 'flex-start',
+            flexDirection: 'column',
             padding: '5% 4% 0 12.35%',
-            gap: '40px',
           }}
         >
+          {/* pfp + text row */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '40px' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 17 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              style={{ flexShrink: 0 }}
+            >
+              <GooglePfp size={160} />
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 17 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              style={{
+                margin: 0,
+                fontFamily: "'Barlow', sans-serif",
+                fontWeight: 800,
+                fontSize: 'clamp(1.8rem, 4.0vw, 5rem)',
+                lineHeight: 1.1,
+                letterSpacing: '-0.022em',
+                color: '#000',
+              }}
+            >
+              I'm Ivan, a Computer Science<br />
+              student at the University of Toronto.<br />
+              I like to build things.
+            </motion.p>
+          </div>
+
+          {/* ── Separator line — width controls length, marginTop controls spacing */}
           <motion.div
-            initial={{ opacity: 0, y: 17 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-            style={{ flexShrink: 0 }}
-          >
-            <GooglePfp size={160} />
-          </motion.div>
-          <motion.p
-            initial={{ opacity: 0, y: 17 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
             style={{
-              margin: 0,
-              fontFamily: "'Barlow', sans-serif",
-              fontWeight: 800,
-              fontSize: 'clamp(1.8rem, 4.0vw, 5rem)',
-              lineHeight: 1.1,
-              letterSpacing: '-0.022em',
-              color: '#000',
+              marginTop: '32px',  // ← increase to move down, decrease to move up
+              width: '77.8%',       // ← increase to make longer, decrease to make shorter
+              marginLeft: '200px',
+              height: '1px',
+              background: '#000000',
             }}
-          >
-            I'm Ivan, a Computer Science<br />
-            student at the University of Toronto.<br />
-            I like to build things.
-          </motion.p>
+          />
         </motion.div>
 
       </div>
