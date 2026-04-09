@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
 import img1 from './assets/7C1DE476-39B7-4387-B12F-14946513A7ED.png'
-import img2 from './assets/b506f63c187f4fc202625926de4521d9.png'
+import img2 from './assets/5707407d232260009be728094431c59f.jpg'
 import img3 from './assets/a674e89510dec10ad745903bb5ad2cf3.png'
 import img4 from './assets/cb3c0c581819c13a5449d8c85e4e2ba1.png'
-import img5 from './assets/c51f25b8109b842c8c12b8df3b1ad426.png'
+import img5 from './assets/92e7f07961f1f0ed08a64bb1923904f5.jpg'
 import img6 from './assets/ffcdaf47af95d309bbe74e70128d0b95.png'
 import img7 from './assets/78ca28acbabff21940dbf6f1fad4648e.png'
 
