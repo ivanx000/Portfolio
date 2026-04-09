@@ -281,6 +281,9 @@ function App() {
   const [shownCount, setShownCount] = useState(0)   // how many images have faded in
   const [risenCount, setRisenCount] = useState(0)   // how many images have risen to cluster
   const [spreading, setSpreading] = useState(false) // all fly to final positions
+  const [featured] = useState(() =>
+    [...projects].sort(() => Math.random() - 0.5).slice(0, 6)
+  )
 
   const { scrollY } = useScroll()
 
@@ -526,7 +529,7 @@ function App() {
             margin: '0 auto',
             width: '732px',
           }}>
-            {projects.map((repo, i) => (
+            {featured.map((repo, i) => (
               <RepoCard key={repo.name} repo={repo} index={i} />
             ))}
           </div>
