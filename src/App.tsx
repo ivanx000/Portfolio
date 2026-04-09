@@ -297,6 +297,10 @@ function App() {
 
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = []
     for (let i = 0; i < 7; i++) {
       const fadeAt = i * IMG_CYCLE
@@ -574,6 +578,22 @@ function App() {
             color: '#111',
           }}>
             <div>Projects</div>
+          </div>
+
+          {/* "Reload to / shuffle Projects" — mirrored on the right */}
+          <div style={{
+            position: 'absolute',
+            right: '150px',
+            top: '60px',
+            fontSize: '11px',
+            fontFamily: "'Barlow', sans-serif",
+            fontWeight: 500,
+            lineHeight: 1.4,
+            color: '#111',
+            textAlign: 'left',
+          }}>
+            <div>Reload to</div>
+            <div>shuffle Projects</div>
           </div>
 
           {/* 2-column cards grid, horizontally centered */}
