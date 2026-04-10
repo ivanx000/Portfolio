@@ -837,12 +837,12 @@ function App() {
             style={{ display: 'flex', alignItems: 'flex-end', gap: '20px', marginBottom: '8px' }}
           >
             <span style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontWeight: 300,
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 900,
               fontSize: 'clamp(9rem, 15vw, 15rem)',
               lineHeight: 0.85,
               letterSpacing: '-0.02em',
-              color: '#000',
+              color: '#222',
               userSelect: 'none',
             }}>
               Let's talk.
