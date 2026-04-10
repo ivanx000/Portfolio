@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
+import gif1 from './assets/pinterest-video-ezgif.com-video-to-gif-converter.gif'
 import img1 from './assets/7C1DE476-39B7-4387-B12F-14946513A7ED.png'
 import img2 from './assets/5707407d232260009be728094431c59f.jpg'
 import img3 from './assets/a674e89510dec10ad745903bb5ad2cf3.png'
@@ -623,12 +624,12 @@ function App() {
         </div>
 
         {/* ── Connect section ────────────────────────────────── */}
-        <div style={{ padding: '60px 0 80px 0', position: 'relative' }}>
+        <div style={{ padding: '20px 0 40px 0', position: 'relative' }}>
           {/* "Connect" label */}
           <div style={{
             position: 'absolute',
             left: '150px',
-            top: '60px',
+            top: '20px',
             fontSize: '11px',
             fontFamily: "'Barlow', sans-serif",
             fontWeight: 500,
@@ -675,6 +676,23 @@ function App() {
               </svg>
             </motion.a>
           </div>
+        </div>
+
+        {/* ── Gif ─────────────────────────────────────────────── */}
+        <div style={{ padding: '0 0 60px 0' }}>
+          <motion.img
+            src={gif1}
+            alt=""
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            style={{
+              display: 'block',
+              width: '220px',
+              marginLeft: 'calc(50% - 220px + 400px)',
+            }}
+          />
         </div>
       </div>
     </>
