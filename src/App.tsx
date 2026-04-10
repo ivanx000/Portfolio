@@ -510,13 +510,106 @@ function App() {
           />
         </div>
 
-        {/* ── Projects section ───────────────────────────────── */}
-        <div style={{ padding: '60px 0 80px 0', position: 'relative' }}>
-          {/* "Projects" label — ~150px from left edge, matching Portfolio/2026 style */}
+        {/* ── About / Experience section ─────────────────────── */}
+        <div style={{ padding: '60px 0 80px 0', position: 'relative', overflow: 'hidden', minHeight: '600px' }}>
+          {/* "About" label */}
           <div style={{
             position: 'absolute',
             left: '150px',
             top: '60px',
+            fontSize: '11px',
+            fontFamily: "'Barlow', sans-serif",
+            fontWeight: 500,
+            lineHeight: 1.4,
+            color: '#111',
+            zIndex: 2,
+          }}>
+            <div>About</div>
+            <div style={{ marginTop: '275px' }}>Experience</div>
+          </div>
+
+          {/* Bio text */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            style={{
+              position: 'relative',
+              zIndex: 1,
+              margin: 0,
+              paddingLeft: '28%',
+              paddingRight: '22%',
+              paddingBottom: '80px',
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 500,
+              fontSize: 'clamp(1rem, 1.35vw, 1.25rem)',
+              lineHeight: 1.75,
+              color: '#000',
+            }}
+          >
+            I love to build high-impact technical projects that solve real problems. I bridge the gap between complex backend architecture and seamless, user-centric frontends. My work focuses on engineering robust full-stack applications that people actually enjoy using. I am currently based in Toronto and collaborate with innovative teams to ship scalable, production-ready code. Have a challenging project in mind? I am always on the lookout for ambitious software engineering collaborations!
+          </motion.p>
+
+          {/* Work experience grid */}
+          {(() => {
+            type Experience = { bullet?: boolean; title: string; period: string; org: string; location: string } | null
+
+            const experiences: Experience[] = [
+              { bullet: true, title: 'University of Toronto \nSt. George', period: '2024 - Present', org: '', location: '' },
+              { title: 'Software Engineer Intern', period: 'May 2025 - Aug 2025', org: 'Project: Human City', location: 'Toronto, ON' },
+              { title: 'Software Engineer Intern', period: 'Jan 2025 - Apr 2025', org: 'Connecting Youth In Med', location: 'Markham, ON' },
+              null,
+              null,
+              { title: 'Research Lead', period: '2026', org: 'Owning My - RiipenLabs', location: 'Toronto, ON' },
+            ]
+
+            return (
+              <div style={{
+                position: 'relative',
+                zIndex: 1,
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 220px)',
+                gap: '28px 56px',
+                marginLeft: 'calc(50% - 295px)',
+              }}>
+                {experiences.map((item, i) =>
+                  item === null ? (
+                    <div key={i} />
+                  ) : (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.1 }}
+                      transition={{ duration: 0.2, delay: (i % 3) * 0.06, ease: 'easeOut' }}
+                      style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}
+                    >
+                      {item.bullet
+                        ? <span style={{ fontFamily: "'Barlow', sans-serif", fontSize: '22px', fontWeight: 900, color: '#111', marginTop: '-3px', flexShrink: 0, lineHeight: 1 }}>•</span>
+                        : <span style={{ width: '16px', flexShrink: 0 }} />
+                      }
+                      <div style={{ fontFamily: "'Barlow', sans-serif", fontSize: '11px', color: '#111', lineHeight: 1.5 }}>
+                        <div style={{ fontWeight: 500, whiteSpace: 'pre-line' }}>{item.title}</div>
+                        <div>{item.period}</div>
+                        {item.org      && <div>{item.org}</div>}
+                        {item.location && <div>{item.location}</div>}
+                      </div>
+                    </motion.div>
+                  )
+                )}
+              </div>
+            )
+          })()}
+        </div>
+
+        {/* ── Projects section ───────────────────────────────── */}
+        <div style={{ padding: '20px 0 80px 0', position: 'relative' }}>
+          {/* "Projects" label — ~150px from left edge, matching Portfolio/2026 style */}
+          <div style={{
+            position: 'absolute',
+            left: '150px',
+            top: '20px',
             fontSize: '11px',
             fontFamily: "'Barlow', sans-serif",
             fontWeight: 500,
@@ -530,7 +623,7 @@ function App() {
           <div style={{
             position: 'absolute',
             right: '150px',
-            top: '60px',
+            top: '20px',
             fontSize: '11px',
             fontFamily: "'Barlow', sans-serif",
             fontWeight: 500,
@@ -579,10 +672,10 @@ function App() {
             // Use null for an empty cell so items align to a specific column.
             const interests: Interest[] = [
               { bullet: true, title: 'Vibe Coding', period: 'VS Code, Anti Gravity', org: 'Claude, GitHub Copilot', location: '',           },
-              {               title: 'Video Games',             period: 'Minecraft',   org: 'Fortnite', location: 'Clash Royale' },
-              {               title: 'Basketball',                            period: 'League: NBA',          org: 'Lebron James',      location: 'Lakers'  },
+              {               title: 'Video Games',             period: 'Minecraft 2015 - Present',   org: 'Fortnite 2018 - 2020', location: 'Clash Royale 2024 - Present' },
+              {               title: 'Basketball',                            period: 'League: NBA',          org: 'Favorite Player: Lebron James',      location: 'Favorite Team: Lakers'  },
               null,  // empty cell — keeps Interactive Designer in column 2 (under Art Director)
-              {               title: 'Video Editing',                       period: 'Sony Vegas',   org: 'Capcut',        location: '' },
+              {               title: 'Video Editing',                       period: 'Sony Vegas 2019 - Present',   org: 'Capcut 2026',        location: '' },
               {               title: 'Health & Fitness',                                period: 'Food, Cooking',   org: 'Gym, Fitness',   location: '' },
             ]
 
