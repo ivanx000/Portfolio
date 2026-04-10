@@ -88,6 +88,34 @@ const projects: Repo[] = [
   { name: 'ry-cha/sleepi',         description: 'hack western 2025',                                                                    url: 'https://github.com/ry-cha/sleepi',                  language: 'JavaScript',  stars: 0, forks: 0, fork: false },
 ]
 
+// ─── Skills data (20 skills, 5 cols × 4 rows) ────────────
+interface Skill { name: string; icon: string | null; cycleDuration: number; phaseDelay: number }
+const skillsData: Skill[] = ([
+  { name: 'Java',         icon: 'java'             },
+  { name: 'Python',       icon: 'python'           },
+  { name: 'JavaScript',   icon: 'javascript'       },
+  { name: 'Go',           icon: 'go'               },
+  { name: 'C++',          icon: 'cplusplus'        },
+  { name: 'React',        icon: 'react'            },
+  { name: 'Node.js',      icon: 'nodedotjs'        },
+  { name: 'Next.js',      icon: 'nextdotjs'        },
+  { name: 'FastAPI',      icon: 'fastapi'          },
+  { name: 'Tailwind CSS', icon: 'tailwindcss'      },
+  { name: 'React Native', icon: 'react'            },
+  { name: 'Django',       icon: 'django'           },
+  { name: 'AWS',          icon: 'amazonaws'        },
+  { name: 'MongoDB',      icon: 'mongodb'          },
+  { name: 'Docker',       icon: 'docker'           },
+  { name: 'OpenAI API',   icon: 'openai'           },
+  { name: 'GraphQL',      icon: 'graphql'          },
+  { name: 'Git',          icon: 'git'              },
+  { name: 'GitHub',       icon: 'github'           },
+  { name: 'VS Code',      icon: 'visualstudiocode' },
+] as { name: string; icon: string | null }[]).map(s => {
+  const cycleDuration = 8 + Math.random() * 5
+  return { ...s, cycleDuration, phaseDelay: -(Math.random() * cycleDuration) }
+})
+
 // ─── Repo card (GitHub-style) ─────────────────────────────
 function RepoCard({ repo, index }: { repo: Repo; index: number }) {
   const dotColor = repo.language ? (langColors[repo.language] ?? '#8b949e') : null
@@ -671,12 +699,12 @@ function App() {
             // Grid fills left-to-right, top-to-bottom in 3 columns.
             // Use null for an empty cell so items align to a specific column.
             const interests: Interest[] = [
-              { bullet: true, title: 'Vibe Coding', period: 'VS Code, Anti Gravity', org: 'Claude, GitHub Copilot', location: '',           },
+              { bullet: true, title: 'Coding', period: 'VS Code, Anti Gravity', org: 'Claude, GitHub Copilot', location: '',           },
               {               title: 'Video Games',             period: 'Minecraft 2015 - Present',   org: 'Fortnite 2018 - 2020', location: 'Clash Royale 2024 - Present' },
               {               title: 'Basketball',                            period: 'League: NBA',          org: 'Favorite Player: Lebron James',      location: 'Favorite Team: Lakers'  },
               null,  // empty cell — keeps Interactive Designer in column 2 (under Art Director)
               {               title: 'Video Editing',                       period: 'Sony Vegas 2019 - Present',   org: 'Capcut 2026',        location: '' },
-              {               title: 'Health & Fitness',                                period: 'Food, Cooking',   org: 'Gym, Fitness',   location: '' },
+              {               title: 'Health & Fitness',                                period: 'Food, Cooking',   org: 'Gym',   location: '' },
             ]
 
             return (
@@ -684,7 +712,7 @@ function App() {
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 220px)',
                 gap: '28px 56px',
-                marginLeft: 'calc(50% - 220px)',
+                marginLeft: 'calc(50% - 295px)',
               }}>
                 {interests.map((item, i) =>
                   item === null ? (
@@ -716,21 +744,80 @@ function App() {
           })()}
         </div>
 
-        {/* ── Gif ─────────────────────────────────────────────── */}
-        <div style={{ padding: '0 0 200px 0' }}>
-          <motion.img
-            src={gif1}
-            alt=""
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-            style={{
-              display: 'block',
-              width: '220px',
-              marginLeft: 'calc(50% - 220px + 450px)',
-            }}
-          />
+        {/* ── Skills + Gif section ─────────────────────────────── */}
+        <div style={{ padding: '20px 0 200px 0' }}>
+          {/* "Skills" label — normal flow, aligned with Interests at 150px */}
+          <div style={{
+            paddingLeft: '150px',
+            paddingBottom: '14px',
+            fontSize: '11px',
+            fontFamily: "'Barlow', sans-serif",
+            fontWeight: 500,
+            color: '#111',
+          }}>
+            Skills
+          </div>
+
+          {/* Content row */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '40px', paddingLeft: '150px', paddingRight: '120px' }}>
+            {/* Skills rectangle — 5 cols × 4 rows, evenly spaced */}
+            <div style={{
+              flex: 1,
+              display: 'grid',
+              gridTemplateColumns: 'repeat(5, 1fr)',
+              alignContent: 'space-evenly',
+              justifyItems: 'start',
+              height: '380px',
+            }}>
+              {skillsData.map(skill => (
+                <motion.div
+                  key={skill.name}
+                  animate={{ opacity: [0, 1, 1, 0, 0] }}
+                  transition={{
+                    duration: skill.cycleDuration,
+                    delay: skill.phaseDelay,
+                    repeat: Infinity,
+                    repeatType: 'loop',
+                    times: [0, 0.06, 0.15, 0.21, 1],
+                    ease: 'easeInOut',
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontFamily: "'Barlow', sans-serif",
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    color: '#111',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {skill.icon && (
+                    <img
+                      src={`https://cdn.simpleicons.org/${skill.icon}`}
+                      width="19"
+                      height="19"
+                      alt=""
+                      style={{ flexShrink: 0 }}
+                      onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
+                    />
+                  )}
+                  {skill.name}
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Gif */}
+            <motion.img
+              src={gif1}
+              alt=""
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              style={{ display: 'block', width: '220px', flexShrink: 0 }}
+            />
+          </div>
         </div>
 
         {/* ── Footer bar ──────────────────────────────────────── */}
