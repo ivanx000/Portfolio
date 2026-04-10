@@ -88,30 +88,27 @@ const projects: Repo[] = [
   { name: 'ry-cha/sleepi',         description: 'hack western 2025',                                                                    url: 'https://github.com/ry-cha/sleepi',                  language: 'JavaScript',  stars: 0, forks: 0, fork: false },
 ]
 
-// ─── Skills data (20 skills, 5 cols × 4 rows) ────────────
-interface Skill { name: string; icon: string | null; cycleDuration: number; phaseDelay: number }
+// ─── Skills data (16 skills, 4 cols × 4 rows) ────────────
+const DI = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons'
+interface Skill { name: string; iconUrl: string; cycleDuration: number; phaseDelay: number }
 const skillsData: Skill[] = ([
-  { name: 'Java',         icon: 'java'             },
-  { name: 'Python',       icon: 'python'           },
-  { name: 'JavaScript',   icon: 'javascript'       },
-  { name: 'Go',           icon: 'go'               },
-  { name: 'C++',          icon: 'cplusplus'        },
-  { name: 'React',        icon: 'react'            },
-  { name: 'Node.js',      icon: 'nodedotjs'        },
-  { name: 'Next.js',      icon: 'nextdotjs'        },
-  { name: 'FastAPI',      icon: 'fastapi'          },
-  { name: 'Tailwind CSS', icon: 'tailwindcss'      },
-  { name: 'React Native', icon: 'react'            },
-  { name: 'Django',       icon: 'django'           },
-  { name: 'AWS',          icon: 'amazonaws'        },
-  { name: 'MongoDB',      icon: 'mongodb'          },
-  { name: 'Docker',       icon: 'docker'           },
-  { name: 'OpenAI API',   icon: 'openai'           },
-  { name: 'GraphQL',      icon: 'graphql'          },
-  { name: 'Git',          icon: 'git'              },
-  { name: 'GitHub',       icon: 'github'           },
-  { name: 'VS Code',      icon: 'visualstudiocode' },
-] as { name: string; icon: string | null }[]).map(s => {
+  { name: 'Python',       iconUrl: `${DI}/python/python-original.svg`                                     },
+  { name: 'JavaScript',   iconUrl: `${DI}/javascript/javascript-original.svg`                             },
+  { name: 'Java',         iconUrl: `${DI}/java/java-original.svg`                                         },
+  { name: 'React',        iconUrl: `${DI}/react/react-original.svg`                                       },
+  { name: 'Node.js',      iconUrl: `${DI}/nodejs/nodejs-original.svg`                                     },
+  { name: 'Next.js',      iconUrl: `${DI}/nextjs/nextjs-original.svg`                                     },
+  { name: 'Tailwind CSS', iconUrl: `${DI}/tailwindcss/tailwindcss-original.svg`                           },
+  { name: 'FastAPI',      iconUrl: `${DI}/fastapi/fastapi-original.svg`                                   },
+  { name: 'Django',       iconUrl: `${DI}/django/django-plain.svg`                                        },
+  { name: 'Docker',       iconUrl: `${DI}/docker/docker-original.svg`                                     },
+  { name: 'MongoDB',      iconUrl: `${DI}/mongodb/mongodb-original.svg`                                   },
+  { name: 'AWS',          iconUrl: `${DI}/amazonwebservices/amazonwebservices-plain-wordmark.svg`          },
+  { name: 'OpenAI API',   iconUrl: `${DI}/openai/openai-original.svg`                                     },
+  { name: 'Git',          iconUrl: `${DI}/git/git-original.svg`                                           },
+  { name: 'GitHub',       iconUrl: `${DI}/github/github-original.svg`                                     },
+  { name: 'VS Code',      iconUrl: `${DI}/vscode/vscode-original.svg`                                     },
+] as { name: string; iconUrl: string }[]).map(s => {
   const cycleDuration = 8 + Math.random() * 5
   return { ...s, cycleDuration, phaseDelay: -(Math.random() * cycleDuration) }
 })
@@ -760,13 +757,13 @@ function App() {
 
           {/* Content row */}
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '40px', paddingLeft: '150px', paddingRight: '120px' }}>
-            {/* Skills rectangle — 5 cols × 4 rows, evenly spaced */}
+            {/* Skills rectangle — 4 cols × 4 rows, evenly spaced */}
             <div style={{
               flex: 1,
               display: 'grid',
-              gridTemplateColumns: 'repeat(5, 1fr)',
+              gridTemplateColumns: 'repeat(4, 1fr)',
               alignContent: 'space-evenly',
-              justifyItems: 'start',
+              justifyItems: 'center',
               height: '380px',
             }}>
               {skillsData.map(skill => (
@@ -784,24 +781,22 @@ function App() {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px',
+                    gap: '8px',
                     fontFamily: "'Barlow', sans-serif",
-                    fontSize: '14px',
+                    fontSize: '16px',
                     fontWeight: 500,
                     color: '#111',
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  {skill.icon && (
-                    <img
-                      src={`https://cdn.simpleicons.org/${skill.icon}`}
-                      width="19"
-                      height="19"
-                      alt=""
-                      style={{ flexShrink: 0 }}
-                      onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
-                    />
-                  )}
+                  <img
+                    src={skill.iconUrl}
+                    width="22"
+                    height="22"
+                    alt=""
+                    style={{ flexShrink: 0 }}
+                    onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
+                  />
                   {skill.name}
                 </motion.div>
               ))}
