@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 
 import gif1 from './assets/pinterest-video-ezgif.com-video-to-gif-converter.gif'
 import img1 from './assets/7C1DE476-39B7-4387-B12F-14946513A7ED.png'
@@ -313,6 +313,7 @@ function GooglePfp({ size = 140 }: { size?: number }) {
 
 // ─── Component ───────────────────────────────────────────
 function App() {
+  const [started, setStarted] = useState(false)      // gate — intro plays only after user clicks
   const [shownCount, setShownCount] = useState(0)   // how many images have faded in
   const [risenCount, setRisenCount] = useState(0)   // how many images have risen to cluster
   const [spreading, setSpreading] = useState(false) // all fly to final positions
@@ -335,7 +336,14 @@ function App() {
     window.scrollTo(0, 0)
   }, [])
 
+  // Lock scrolling until the user clicks to start the intro
   useEffect(() => {
+    document.body.style.overflow = started ? '' : 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [started])
+
+  useEffect(() => {
+    if (!started) return
     const timers: ReturnType<typeof setTimeout>[] = []
     for (let i = 0; i < 7; i++) {
       const fadeAt = i * IMG_CYCLE
@@ -345,10 +353,43 @@ function App() {
     }
     timers.push(setTimeout(() => setSpreading(true), SPREAD_START))
     return () => timers.forEach(clearTimeout)
-  }, [])
+  }, [started])
 
   return (
     <>
+      {/* ── Click-to-start gate — intro plays only once dismissed ── */}
+      <AnimatePresence>
+        {!started && (
+          <motion.div
+            onClick={() => setStarted(true)}
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 100,
+              background: '#fff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+            }}
+          >
+            <span style={{
+              fontFamily: "'Barlow', sans-serif",
+              fontWeight: 500,
+              fontSize: '14px',
+              letterSpacing: '0.05em',
+              color: '#111',
+              userSelect: 'none',
+            }}>
+              Click
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* ── Fixed hero — background stays put while content scrolls ── */}
       <div style={{ position: 'fixed', inset: 0, background: '#fff', overflow: 'hidden', zIndex: 0 }}>
 
