@@ -849,7 +849,7 @@ function App() {
               color: '#222',
               userSelect: 'none',
             }}>
-              Let's talk.
+              Connect:
             </span>
             <motion.a
               href="https://www.linkedin.com/in/xieivan/"
