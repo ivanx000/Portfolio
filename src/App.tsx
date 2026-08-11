@@ -15,9 +15,8 @@ const IMG_FADE_DUR    = 15    // each image fades in over this long
 const IMG_RISE_DUR    = 28    // each image rises over this long
 const IMG_CYCLE       = IMG_FADE_DUR + IMG_RISE_DUR  // ~43ms per image → 7 × 43 ≈ 300ms
 const ALL_IMAGES_DONE = 300   // 0.3s for all images
-const LABEL_FADE_DUR  = 1400  // ms — nav / Portfolio label fade duration (always-visible chrome)
-const HEY_FADE_DUR    = 900   // ms — Hey, fade duration (used to calc spread timing)
-const HEY_START_Y     = 70    // px — Hey, rises from this far below its resting position
+const HEY_FADE_DUR    = 1000  // ms — Hey, fade duration (used to calc spread timing)
+const HEY_START_Y     = 50    // px — Hey, rises from this far below its resting position
 const TEXT_DELAY      = ALL_IMAGES_DONE          // text starts right after images done
 const SPREAD_START    = ALL_IMAGES_DONE + HEY_FADE_DUR / 2  // spread at halfway through text fade
 const IMAGE_SIZE      = '9%'
@@ -378,30 +377,22 @@ function App() {
               cursor: 'pointer',
             }}
           >
-            <motion.span
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-              style={{
-                display: 'inline-block',
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontWeight: 500,
-                fontSize: 'clamp(1.8rem, 4vw, 3rem)',
-                letterSpacing: '0.04em',
-                color: '#111',
-                userSelect: 'none',
-              }}
-            >
+            <span style={{
+              fontFamily: "'Barlow', sans-serif",
+              fontWeight: 500,
+              fontSize: 'clamp(1.8rem, 4vw, 3rem)',
+              letterSpacing: '0.04em',
+              color: '#111',
+              userSelect: 'none',
+            }}>
               Click to Start
-            </motion.span>
+            </span>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* ── Top navigation — persistent chrome, stays above the click gate ── */}
-      <motion.nav
-        initial={{ opacity: 0, y: 17 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: LABEL_FADE_DUR / 1000, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+      <nav
         style={{
           position: 'fixed',
           top: 0, left: 0, right: 0,
@@ -419,7 +410,7 @@ function App() {
         <span>Ivan Xie</span>
         <span style={{ marginRight: '8%' }}>Software Engineer</span>
         <span style={{ fontWeight: 700 }}>University of Toronto</span>
-      </motion.nav>
+      </nav>
 
       {/* ── Portfolio / 2026 — persistent chrome, stays above the click gate ── */}
       <motion.div
@@ -431,10 +422,7 @@ function App() {
           zIndex: 150,
         }}
       >
-        <motion.div
-          initial={{ opacity: 0, y: 17 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: LABEL_FADE_DUR / 1000, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+        <div
           style={{
             position: 'absolute',
             left: '20px',
@@ -449,7 +437,7 @@ function App() {
         >
           <div>Portfolio</div>
           <div>2026</div>
-        </motion.div>
+        </div>
       </motion.div>
 
       {/* ── Fixed hero — background stays put while content scrolls ── */}
