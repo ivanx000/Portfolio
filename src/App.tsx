@@ -15,7 +15,7 @@ const IMG_FADE_DUR    = 15    // each image fades in over this long
 const IMG_RISE_DUR    = 28    // each image rises over this long
 const IMG_CYCLE       = IMG_FADE_DUR + IMG_RISE_DUR  // ~43ms per image → 7 × 43 ≈ 300ms
 const ALL_IMAGES_DONE = 300   // 0.3s for all images
-const HEY_FADE_DUR    = 600   // ms — Hey, fade duration (used to calc spread timing)
+const HEY_FADE_DUR    = 1400  // ms — Hey, fade duration (used to calc spread timing)
 const TEXT_DELAY      = ALL_IMAGES_DONE          // text starts right after images done
 const SPREAD_START    = ALL_IMAGES_DONE + HEY_FADE_DUR / 2  // spread at halfway through text fade
 const IMAGE_SIZE      = '9%'
@@ -379,12 +379,12 @@ function App() {
             <span style={{
               fontFamily: "'Barlow', sans-serif",
               fontWeight: 500,
-              fontSize: '14px',
+              fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
               letterSpacing: '0.05em',
               color: '#111',
               userSelect: 'none',
             }}>
-              Click
+              Click to Start
             </span>
           </motion.div>
         )}
