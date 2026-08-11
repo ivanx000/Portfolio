@@ -56,6 +56,7 @@ const langColors: Record<string, string> = {
   Java:        '#b07219',
   'C++':       '#f34b7d',
   Kotlin:      '#A97BFF',
+  Rust:        '#dea584',
 }
 
 // ─── Project data ─────────────────────────────────────────
@@ -70,6 +71,9 @@ interface Repo {
 }
 
 const projects: Repo[] = [
+  { name: 'caden-rs',              description: 'A WebAuthn relying-party library written in Rust',                                       url: 'https://github.com/ivanx000/caden-rs',              language: 'Rust',        stars: 0, forks: 0, fork: false },
+  { name: 'evals',                 description: 'CLI framework for benchmarking LLMs across custom test suites',                          url: 'https://github.com/ivanx000/evals',                 language: 'TypeScript',  stars: 0, forks: 0, fork: false },
+  { name: 'healthlens',            description: 'FHIR patient data explorer for oncology workflows, visualizing longitudinal timelines',   url: 'https://github.com/ivanx000/healthlens',            language: 'TypeScript',  stars: 0, forks: 0, fork: false },
   { name: 'Pipeline',              description: 'A Custom CI/CD Pipeline',                                                               url: 'https://github.com/ivanx000/Pipeline',              language: 'Go',          stars: 0, forks: 0, fork: false },
   { name: 'githelp',               description: 'Terminal-native AI Git assistant with safety checks and approval workflows',             url: 'https://github.com/ivanx000/githelp',               language: 'Python',      stars: 0, forks: 0, fork: false },
   { name: 'sami',                  description: 'Mobile self-improvement app focused on reducing distractions and building discipline',   url: 'https://github.com/ivanx000/sami',                  language: 'TypeScript',  stars: 0, forks: 0, fork: false },
@@ -77,6 +81,11 @@ const projects: Repo[] = [
   { name: 'Parker',                description: 'Mobile app tracking parking locations with navigation assistance',                       url: 'https://github.com/ivanx000/Parker',                language: 'TypeScript',  stars: 0, forks: 0, fork: false },
   { name: 'CalendarApp',           description: 'An AI powered calendar app',                                                            url: 'https://github.com/ivanx000/CalendarApp',           language: 'TypeScript',  stars: 0, forks: 0, fork: false },
   { name: 'ShopOut',               description: 'AI-powered shopping cart assembly based on user descriptions',                          url: 'https://github.com/ivanx000/ShopOut',               language: 'TypeScript',  stars: 0, forks: 0, fork: false },
+  { name: 'PlantPal',              description: 'AI identifier app for plants',                                                          url: 'https://github.com/ivanx000/PlantPal',              language: 'TypeScript',  stars: 0, forks: 0, fork: false },
+  { name: 'Backtrack',             description: 'Paste a YouTube link. Find the music. Done.',                                            url: 'https://github.com/ivanx000/Backtrack',             language: 'TypeScript',  stars: 0, forks: 0, fork: false },
+  { name: 'niche',                 description: 'Interrupts mindless scrolling with smarter, healthier alternatives in real time',        url: 'https://github.com/ivanx000/niche',                 language: 'TypeScript',  stars: 0, forks: 0, fork: false },
+  { name: 'captions',              description: 'Generates a .srt subtitle file from a .mp4 file',                                        url: 'https://github.com/ivanx000/captions',              language: 'Python',      stars: 0, forks: 0, fork: false },
+  { name: 'prerequisites.uoft',    description: 'Easily view course prerequisites at the University of Toronto',                          url: 'https://github.com/ivanx000/prerequisites.uoft',    language: 'Python',      stars: 0, forks: 0, fork: false },
   { name: 'NL2SQL',                description: 'Natural Language to SQL queries using AI',                                              url: 'https://github.com/ivanx000/NL2SQL',                language: 'Python',      stars: 0, forks: 0, fork: false },
   { name: 'Nourish',               description: null,                                                                                    url: 'https://github.com/ivanx000/Nourish',               language: 'TypeScript',  stars: 0, forks: 0, fork: false },
   { name: 'StretchApp',            description: 'Android stretch reminder application',                                                  url: 'https://github.com/ivanx000/StretchApp',            language: 'Kotlin',      stars: 0, forks: 0, fork: false },
@@ -584,7 +593,7 @@ function App() {
               { bullet: true, title: 'University of Toronto \nSt. George', period: '2024 - Present', org: '', location: '' },
               { title: 'Software Engineer Intern', period: 'May 2025 - Aug 2025', org: 'Project: Human City', location: 'Toronto, ON' },
               { title: 'Software Engineer Intern', period: 'Jan 2025 - Apr 2025', org: 'Connecting Youth In Med', location: 'Markham, ON' },
-              null,
+              { title: 'Software Engineer Intern', period: 'Jul 2026 - Present', org: 'Swimingo', location: 'Toronto, ON' },
               null,
               { title: 'Research Lead', period: '2026', org: 'Owning My - RiipenLabs', location: 'Toronto, ON' },
             ]
