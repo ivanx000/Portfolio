@@ -593,8 +593,8 @@ function App() {
               { bullet: true, title: 'University of Toronto \nSt. George', period: '2024 - Present', org: '', location: '' },
               { title: 'Software Engineer Intern', period: 'May 2025 - Aug 2025', org: 'Project: Human City', location: 'Toronto, ON' },
               { title: 'Software Engineer Intern', period: 'Jan 2025 - Apr 2025', org: 'Connecting Youth In Med', location: 'Markham, ON' },
-              { title: 'Software Engineer Intern', period: 'Jul 2026 - Present', org: 'Swimingo', location: 'Toronto, ON' },
               null,
+              { title: 'Software Engineer Intern', period: 'Jul 2026 - Present', org: 'Swimingo', location: 'Toronto, ON' },
               { title: 'Research Lead', period: '2026', org: 'Owning My - RiipenLabs', location: 'Toronto, ON' },
             ]
 
