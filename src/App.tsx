@@ -15,7 +15,9 @@ const IMG_FADE_DUR    = 15    // each image fades in over this long
 const IMG_RISE_DUR    = 28    // each image rises over this long
 const IMG_CYCLE       = IMG_FADE_DUR + IMG_RISE_DUR  // ~43ms per image → 7 × 43 ≈ 300ms
 const ALL_IMAGES_DONE = 300   // 0.3s for all images
-const HEY_FADE_DUR    = 1400  // ms — Hey, fade duration (used to calc spread timing)
+const LABEL_FADE_DUR  = 1400  // ms — nav / Portfolio label fade duration (always-visible chrome)
+const HEY_FADE_DUR    = 900   // ms — Hey, fade duration (used to calc spread timing)
+const HEY_START_Y     = 70    // px — Hey, rises from this far below its resting position
 const TEXT_DELAY      = ALL_IMAGES_DONE          // text starts right after images done
 const SPREAD_START    = ALL_IMAGES_DONE + HEY_FADE_DUR / 2  // spread at halfway through text fade
 const IMAGE_SIZE      = '9%'
@@ -376,47 +378,84 @@ function App() {
               cursor: 'pointer',
             }}
           >
-            <span style={{
-              fontFamily: "'Barlow', sans-serif",
-              fontWeight: 500,
-              fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
-              letterSpacing: '0.05em',
-              color: '#111',
-              userSelect: 'none',
-            }}>
+            <motion.span
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+              style={{
+                display: 'inline-block',
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontWeight: 500,
+                fontSize: 'clamp(1.8rem, 4vw, 3rem)',
+                letterSpacing: '0.04em',
+                color: '#111',
+                userSelect: 'none',
+              }}
+            >
               Click to Start
-            </span>
+            </motion.span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* ── Fixed hero — background stays put while content scrolls ── */}
-      <div style={{ position: 'fixed', inset: 0, background: '#fff', overflow: 'hidden', zIndex: 0 }}>
+      {/* ── Top navigation — persistent chrome, stays above the click gate ── */}
+      <motion.nav
+        initial={{ opacity: 0, y: 17 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: LABEL_FADE_DUR / 1000, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+        style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0,
+          zIndex: 150,
+          pointerEvents: 'none',
+          display: 'flex',
+          justifyContent: 'space-between',
+          padding: '8px 20px',
+          fontSize: '11px',
+          fontFamily: "'Barlow', sans-serif",
+          fontWeight: 500,
+          color: '#111',
+        }}
+      >
+        <span>Ivan Xie</span>
+        <span style={{ marginRight: '8%' }}>Software Engineer</span>
+        <span style={{ fontWeight: 700 }}>University of Toronto</span>
+      </motion.nav>
 
-        {/* ── Top navigation ─────────────────────────────────── */}
-        <motion.nav
+      {/* ── Portfolio / 2026 — persistent chrome, stays above the click gate ── */}
+      <motion.div
+        style={{
+          opacity: heroOpacity,
+          position: 'fixed',
+          inset: 0,
+          pointerEvents: 'none',
+          zIndex: 150,
+        }}
+      >
+        <motion.div
           initial={{ opacity: 0, y: 17 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: HEY_FADE_DUR / 1000, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
+          transition={{ duration: LABEL_FADE_DUR / 1000, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
           style={{
             position: 'absolute',
-            top: 0, left: 0, right: 0,
-            zIndex: 50,
-            display: 'flex',
-            justifyContent: 'space-between',
-            padding: '8px 20px',
+            left: '20px',
+            top: '50%',
+            transform: 'translateY(-50%)',
             fontSize: '11px',
             fontFamily: "'Barlow', sans-serif",
             fontWeight: 500,
+            lineHeight: 1.4,
             color: '#111',
           }}
         >
-          <span>Ivan Xie</span>
-          <span style={{ marginRight: '8%' }}>Software Engineer</span>
-          <span style={{ fontWeight: 700 }}>University of Toronto</span>
-        </motion.nav>
+          <div>Portfolio</div>
+          <div>2026</div>
+        </motion.div>
+      </motion.div>
 
-        {/* ── Hero text — fades as content scrolls up ─────────── */}
+      {/* ── Fixed hero — background stays put while content scrolls ── */}
+      <div style={{ position: 'fixed', inset: 0, background: '#fff', overflow: 'hidden', zIndex: 0 }}>
+
+        {/* ── "Hey," headline — hidden behind the gate, plays once started ── */}
         <motion.div
           style={{
             opacity: heroOpacity,
@@ -426,28 +465,6 @@ function App() {
             zIndex: 35,
           }}
         >
-          {/* ── Portfolio / 2026 — left centre ─────────────────── */}
-          <motion.div
-            initial={{ opacity: 0, y: 17 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: HEY_FADE_DUR / 1000, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
-            style={{
-              position: 'absolute',
-              left: '20px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              fontSize: '11px',
-              fontFamily: "'Barlow', sans-serif",
-              fontWeight: 500,
-              lineHeight: 1.4,
-              color: '#111',
-            }}
-          >
-            <div>Portfolio</div>
-            <div>2026</div>
-          </motion.div>
-
-          {/* ── "Hey," headline ────────────────────────────────── */}
           <div
             style={{
               position: 'absolute',
@@ -459,8 +476,8 @@ function App() {
             <motion.div style={{ scale: heyScale, filter: heyFilter, transformOrigin: 'center center' }}>
             <div style={{ transform: 'scaleX(0.88)', transformOrigin: 'center center' }}>
             <motion.h1
-              initial={{ opacity: 0, y: 22 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: HEY_START_Y }}
+              animate={started ? { opacity: 1, y: 0 } : { opacity: 0, y: HEY_START_Y }}
               transition={{ duration: HEY_FADE_DUR / 1000, delay: TEXT_DELAY / 1000, ease: 'easeOut' }}
               style={{
                 margin: 0,
