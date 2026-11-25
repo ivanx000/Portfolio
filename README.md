@@ -2,7 +2,7 @@
 
 Ivan Xie's personal site. React, TypeScript, Vite and Framer Motion.
 
-**Live site:** https://portfolio-virid-eight-c249f95trb.vercel.app/
+**Live site:** https://ivanxie.vercel.app/
 
 ## Two sites, one build
 
