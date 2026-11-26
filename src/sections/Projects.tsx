@@ -96,7 +96,7 @@ export function Projects() {
                 </div>
                 <div className="card-body">
                   <h3>{p.name}</h3>
-                  <span className="card-meta">{p.commits}</span>
+                  <span className="card-meta">{p.meta}</span>
                   <p>{p.blurb}</p>
                   <span className="card-stack">{p.stack.join(' · ')}</span>
                   <div className="card-links">

@@ -1,5 +1,5 @@
 // All site copy lives here so the sections stay presentational.
-// Sources: resume (Nov 2026) and GitHub commit counts on each repo's default branch.
+// Sources: resume (Nov 2026) and each project's own repo.
 
 export const LINKS = {
   github: 'https://github.com/ivanx000',
@@ -32,7 +32,7 @@ export type Project = {
   name: string
   blurb: string
   stack: string[]
-  commits: string
+  meta: string // one short highlight shown on the card
   creature: Creature
   links: { label: string; href: string }[]
   private?: boolean
@@ -44,7 +44,7 @@ export const PROJECTS: Project[] = [
     name: 'Evals',
     blurb: 'A pytest-style CLI that benchmarks LLM outputs against YAML test suites, with regex, code and LLM-as-judge graders.',
     stack: ['TypeScript', 'Node.js', 'Vitest'],
-    commits: '147 commits',
+    meta: '3 grader types',
     creature: 'striped',
     links: [{ label: 'view repo', href: 'https://github.com/ivanx000/evals' }],
   },
@@ -52,7 +52,7 @@ export const PROJECTS: Project[] = [
     name: 'Polymarket Bot',
     blurb: 'An algorithmic trading bot I co-develop: Rust for execution, Python for research, deployed on AWS EC2 with Docker.',
     stack: ['Python', 'Rust', 'Docker'],
-    commits: '500+ commits',
+    meta: 'Runs on AWS EC2',
     creature: 'angler',
     links: [],
     private: true,
@@ -61,7 +61,7 @@ export const PROJECTS: Project[] = [
     name: 'Caden',
     blurb: 'A WebAuthn and passkey library in Rust, built to the W3C Level 3 spec with zero unsafe code and 297+ tests.',
     stack: ['Rust', 'ring', 'Axum'],
-    commits: '127 commits',
+    meta: '297+ tests',
     creature: 'tang',
     links: [{ label: 'view repo', href: 'https://github.com/ivanx000/caden-rs' }],
   },
@@ -69,7 +69,7 @@ export const PROJECTS: Project[] = [
     name: 'NBA Game Predictor',
     blurb: 'Pick tonight’s winner on a 3D court, then see the model’s odds and reasons. It beats Elo on log loss over 1,230 games.',
     stack: ['TypeScript', 'Python', 'Three.js'],
-    commits: 'Live site',
+    meta: 'Live site',
     creature: 'hoop',
     links: [
       { label: 'view repo', href: 'https://github.com/ivanx000/NBA' },
@@ -80,7 +80,7 @@ export const PROJECTS: Project[] = [
     name: 'ShopOut',
     blurb: 'Built at UofTHacks 13: describe who you want to become and AI assembles the cart, using FastAPI, Gemini and RAG.',
     stack: ['Next.js', 'FastAPI', 'Gemini'],
-    commits: 'UofTHacks 13',
+    meta: 'UofTHacks 13',
     creature: 'puffer',
     links: [
       { label: 'view repo', href: 'https://github.com/ivanx000/ShopOut' },

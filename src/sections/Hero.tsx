@@ -62,16 +62,17 @@ type Piece = {
 }
 
 // The three tall pines, whole from tip to foot, bend together in the wind from the ground up.
+// Pieces that touch an edge of the picture are drawn past it, so moving never shows a cut.
 const PINES: Piece[] = [
-  { src: pinesArt, box: [83.529, 22.266, 16.471, 54.492], origin: [50, 100], motion: 'bend', amount: 3, period: 4.6, delay: -1.2 },
+  { src: pinesArt, box: [83.529, 22.266, 24.284, 54.492], origin: [33.9, 100], motion: 'bend', amount: 3, period: 4.6, delay: -1.2 },
 ]
 
 const FRONT: Piece[] = [
   { src: hikerArt, box: [22.656, 48.926, 15.885, 35.938], origin: [37.7, 98.1], motion: 'breathe', amount: 0.8, period: 3.6, delay: 0 },
   // the walking stick rocks from the hand
   { src: stickArt, box: [33.854, 63.281, 3.125, 21.387], origin: [12.5, 0], motion: 'sway', amount: 6.5, period: 3.6, delay: -1 },
-  { src: leavesLArt, box: [0, 68.945, 22.591, 31.055], origin: [43.2, 100], motion: 'sway', amount: 5, period: 4.6, delay: -2 },
-  { src: leavesRArt, box: [82.487, 88.086, 17.513, 11.914], origin: [64.3, 100], motion: 'sway', amount: 6, period: 4.1, delay: -4.5 },
+  { src: leavesLArt, box: [-7.812, 69.043, 30.339, 42.676], origin: [57.9, 72.5], motion: 'sway', amount: 5, period: 4.6, delay: -2 },
+  { src: leavesRArt, box: [82.812, 88.379, 25, 23.34], origin: [43.8, 49.8], motion: 'sway', amount: 6, period: 4.1, delay: -4.5 },
 ]
 
 // Light on the water. Glints that run off an edge are drawn past it.
